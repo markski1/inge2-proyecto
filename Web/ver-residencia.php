@@ -1,13 +1,4 @@
-<?php include('componentes/funciones.php');
-if (isset($_GET['error'])) {
-	switch ($_GET['error']) {
-		case 1:
-			echo "<div class='error'><p>ERROR: Intentaste acceder a un sitio restringido.</p></div>";
-			break;
-	}
-}
-
-?>
+<?php include('componentes/funciones.php') ?>
 <!DOCTYPE html>
 <html>
 <head>
