@@ -92,11 +92,22 @@ hr {
 
 .error {
 	position: fixed;
-	background: #FF1E14;
+	background: #FF1308;
 	bottom: 0px;
 	right: 0px;
 	left: 0px;
 	height: 45px;
+	text-align: center;
+}
+
+.exito {
+	position: fixed;
+	background: #33FF1E;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+	height: 45px;
+	text-align: center;
 }
 
 .residencia-listado {
