@@ -1,11 +1,15 @@
-<?php include('componentes/funciones.php');
-if (isset($_GET['error'])) {
-	switch ($_GET['error']) {
-		case 1:
-			echo "<div class='error'><p>ERROR: Intentaste acceder a un sitio restringido.</p></div>";
-			break;
+<?php 
+	include('componentes/funciones.php');
+	if (isset($_GET['error'])) {
+		switch ($_GET['error']) {
+			case 1:
+				echo "<div class='error'><p>ERROR: Intentaste acceder a un sitio restringido.</p></div>";
+				break;
+		}
 	}
-}
+	include('componentes/sql.php');
+	$con = conectar();
+	$residencias = mysqli_query($con, "SELECT * FROM residencias ORDER BY id");
 
 ?>
 <!DOCTYPE html>
@@ -25,20 +29,7 @@ if (isset($_GET['error'])) {
 		</div>
 		<div class="pagina">
 			<span id="subtitulo">Todas nuestras residencias.</span>
-			<div class="residencia-listado">
-				<div class="alinear-izquierda" style="width: 205px; margin-left: 10px;">
-					<div style="border: 2px solid black; width: 200px; height: 150px;"><p style="padding: 20px">Img de muestra</br></br>200x150 (4:3)</p></div>
-				</div>
-				<div class="alinear-derecha" style="width: 63%; min-width: 370px; padding-top: 10px; padding-left: 14px;">
-					<span id="subtitulo" class="color-hsh">Nombre de residencia</span></br>
-					<p>La Plata, Buenos aires</p>
-					<p>2 habitaciones, 1 baño, living-comedor. Zona centrica.</p>
-					<p>$1,700</p>
-				</div>
-				<div style="clear: both;"></div>
-				<div class="residencia-saber-mas"><span><a href="ver-residencia.php?id=" class="no-subrayado">Ver residencia.</a></span></div>
-			</div>
-			
+			<?php include('componentes/residencia-script-lista.php') ?>
 		</div>
 		<div style="clear: both;"></div>
 	</div>
