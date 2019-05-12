@@ -15,9 +15,11 @@
 		echo '</span></br>';
 		// se lista cada pieza de información
 		echo '<p>'.$listar_residencias['localizacion'].'</p>';
-		echo '<p>'.$listar_residencias['calle'].', '.$listar_residencias['numero'].'</p>';
-		echo '<p>'.$listar_residencias['pisoydepto'].'</p>';
-		echo '<p>$'.$listar_residencias['precio'].'</p>';
+		echo '<p>Calle '.$listar_residencias['calle'].', '.$listar_residencias['numero'].'</p>';
+		if ($listar_residencias['pisoydepto'] != "NA") {
+			echo '<p>'.$listar_residencias['pisoydepto'].'</p>';
+		}
+		echo '<p style="color:green">$'.$listar_residencias['precio'].'</p>';
 		// cerrar divisores y poner el boton de Mas informacion
 		echo '</div>
 				<div style="clear: both;"></div>

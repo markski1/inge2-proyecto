@@ -1,6 +1,6 @@
 <?php
 // Archivo para la demo 1: Cambiar entre modo admin o modo usuario.
-include('funciones.php');
+include('funciones-usuarios.php');
 if (esAdmin()) {
 	echo '[DEMO DEBUG] Modo admin desactivado.';
 	setcookie('admin', '1', time() - 3600, '/');

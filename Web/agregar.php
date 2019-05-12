@@ -1,11 +1,10 @@
-<?php include('componentes/funciones.php') ?>
 <?php 
+	include('componentes/funciones-usuarios.php') ;
 	include('componentes/sql.php');
 	$con = conectar();
 	$error = 0;
-?>
-<?php include('componentes/solo-admin.php') ?>
-<?php 
+	include('componentes/funciones-residencia.php');
+	include('componentes/solo-admin.php');
 	if (isset($_GET['error'])) {
 		switch ($_GET['error']) {
 			case 1:
@@ -78,9 +77,13 @@
 			// addslashes se utiliza para convertir la imagen en binario y asi levantarla a la DB
 			$foto = addslashes(file_get_contents($_FILES['imagen']['tmp_name']));
 			// se envian los datos a la base de datos, si se sube te avisa y si no tambien.
-			$sql = mysqli_query($con, "INSERT INTO residencias (nombre, localizacion, numero, pisoydepto, precio, imagen, descripcion) VALUES ('".$nom."', '".$loc."', '".$num."', '".$pyd."', '".$prec."', '".$foto."', '".$desc."')");
-			if ($sql) echo '<div class="exito"><p>Residencia agregada con exito.</p></div>';
-			else echo '<div class="exito"><p>Error al agregar residencia.</p></div>';
+			$sql = mysqli_query($con, "INSERT INTO residencias (nombre, localizacion, calle, numero, pisoydepto, precio, imagen, descripcion) VALUES ('".$nom."', '".$loc."', '".$cal."','".$num."', '".$pyd."', '".$prec."', '".$foto."', '".$desc."')");
+			if ($sql) {
+				echo '<div class="exito"><p>Residencia agregada con exito.</p></div>';
+				$idNuevaResidencia = mysqli_insert_id($con);
+				CrearSemanas($con, $idNuevaResidencia);
+			} 
+			else echo '<div class="error"><p>Error al agregar residencia.</p></div>';
 
 		}
 
@@ -90,10 +93,10 @@
 <html>
 <head>
 
-	<title>Home Switch Home</title>
+	<title>Home Switch Home - Agregando residencia</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="estilo.css">
-	<script type="text/javascript" src="/js/chequeos.js"></script>
+	<?php include('js/todo.php') ?>
 </head>
 <body>
 	<div class="cabezera"> 

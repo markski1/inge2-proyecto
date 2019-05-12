@@ -19,3 +19,16 @@ function validarResidencia() {
 	return true;
 
 }
+
+function validarResidencia() {
+
+	var precio = document.getElementById("precio");
+	var semana = document.getElementById("semana");
+
+	if(isNaN(semana.value) || isNaN(precio.value)){
+		alert('Uno de los campos no es valido.');
+		return false
+	}
+	return true;
+
+}

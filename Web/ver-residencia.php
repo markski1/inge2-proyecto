@@ -1,7 +1,8 @@
-<?php include('componentes/funciones.php') ?>
 <?php 
+	include('componentes/funciones-usuarios.php');
 	include('componentes/sql.php');
 	$con = conectar();
+	include('componentes/funciones-residencia.php');
 
 	$id = mysqli_real_escape_string($con, $_GET['id']);
 
@@ -19,9 +20,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Home Switch Home</title>
+	<title>Home Switch Home - Viendo residencias</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="estilo.css">
+	<?php include('js/todo.php') ?>
+	<script type="text/javascript">
+		function elegirSemana() {
+			var cajaSemanas = document.getElementById("semanas");
+			var semanaElegida = cajaSemanas.options[cajaSemanas.selectedIndex].value;
+			var redireccionAux = "ver-residencia.php?id=<?php echo $id ?>&semana=";
+			var redireccion = redireccionAux.concat(semanaElegida);
+			window.location = redireccion;
+		}
+	</script>
 </head>
 <body>
 	<div class="cabezera"> 
@@ -40,11 +51,29 @@
 				<div class="alinear-derecha" style="width: 52.5%;">
 					<p><span class="color-hsh"><b>Ciudad:</b></span> <?=$datos_residencia['localizacion']?></p>
 					<p><span class="color-hsh"><b>Dirección:</b></span> <?=$datos_residencia['calle']?>, <?=$datos_residencia['numero']?></p>
-					<p><span class="color-hsh"><b>Piso y depto:</b></span> <?=$datos_residencia['pisoydepto']?></p>
+					<?php
+					if ($datos_residencia['pisoydepto'] != "NA") {
+							echo '<p><span class="color-hsh"><b>Piso y depto:</b></span> ';
+							echo $datos_residencia['pisoydepto'];
+							echo '</p>';
+						}
+					?>
 					<p><span class="color-hsh"><b>Precio por semana:</b></span> $<?=$datos_residencia['precio']?></p>
 				</div>
 				<div style="clear: both;"></div>
 				<p><span class="color-hsh"><b>Descripción:</b></span> <?=utf8_decode($datos_residencia['descripcion'])?></p>
+				<select id="semanas" name="semana" onchange="elegirSemana();">
+				<option value="*">Seleccionar semana</option>
+				<?php $subastas = ListarSemanas($con, $id); ?>
+				</select>
+				<?php 
+					if ($subastas > 0) {
+						if ($subastas == 1) echo '<p>Esta propiedad tiene 1 subasta en curso.';
+						else echo '<p>Esta propiedad tiene '.$subastas.' subastas en curso.';
+					} else {
+						echo '<p>Esta propiedad no tiene subastas en curso.</p>';
+					}
+				?>
 				<?php 
 				if (esAdmin()) {
 					?>

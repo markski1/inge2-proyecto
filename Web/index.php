@@ -1,4 +1,4 @@
-<?php include('componentes/funciones.php');
+<?php include('componentes/funciones-usuarios.php');
 if (isset($_GET['error'])) {
 	switch ($_GET['error']) {
 		case 1:
@@ -14,6 +14,7 @@ if (isset($_GET['error'])) {
 	<title>Home Switch Home</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="estilo.css">
+	<?php include('js/todo.php') ?>
 </head>
 <body>
 	<div class="cabezera"> 
