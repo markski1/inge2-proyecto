@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-05-2019 a las 18:59:25
+-- Tiempo de generación: 12-05-2019 a las 19:46:33
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.10
 
@@ -54,6 +54,20 @@ CREATE TABLE `semanas` (
   `sub_precio_base` int(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `subastas`
+--
+
+CREATE TABLE `subastas` (
+  `id` int(4) NOT NULL,
+  `residencia` int(4) NOT NULL DEFAULT '0',
+  `semana` int(4) NOT NULL DEFAULT '0',
+  `email` varchar(64) NOT NULL DEFAULT '',
+  `oferta` varchar(64) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Índices para tablas volcadas
 --
@@ -71,6 +85,12 @@ ALTER TABLE `semanas`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `subastas`
+--
+ALTER TABLE `subastas`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -84,6 +104,12 @@ ALTER TABLE `residencias`
 -- AUTO_INCREMENT de la tabla `semanas`
 --
 ALTER TABLE `semanas`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `subastas`
+--
+ALTER TABLE `subastas`
   MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
