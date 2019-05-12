@@ -62,3 +62,15 @@ function ListarSemanas($con, $id, $validar = false, $semana = -1) {
 	}
 	return $subCont;
 }
+
+function ObtenerOfertaMasAlta($con, $res, $sem, $email, $cantidadOfertas) {
+	$sql = mysqli_query($con, "SELECT * FROM subastas WHERE residencia=".$res." AND semana=".$sem." ORDER BY oferta DESC");
+	$cantidadOfertas = mysqli_num_rows($sql);
+	if ($cantidadOfertas > 0) {
+		$datosUltimaOferta = mysqli_fetch_array($sql);
+		$email = $datosUltimaOferta['email'];
+		return $datosUltimaOferta['oferta'];
+	} else {
+		return 0;
+	}
+}

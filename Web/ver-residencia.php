@@ -76,7 +76,7 @@
 					$subOfertable = false;
 					if ($subastas > 0) {
 						if ($semana != -1) {
-							echo '<p>Esta semana tiene una subasta en curso.';
+							echo '<p>Esta semana tiene una subasta en curso.</p>';
 							$subOfertable = true;
 						} else {
 							if ($subastas == 1) echo '<p>Esta propiedad tiene 1 subasta en curso.';
@@ -88,16 +88,36 @@
 					}
 
 					if ($subOfertable) {
+						$obtenerDatosSubasta = mysqli_query($con, "SELECT * FROM `semanas` WHERE residencia=".$id." AND id=".$semana);
+						$listarDatosSubasta = mysqli_fetch_array($obtenerDatosSubasta);
+						$email = '';
+						$cantidadOfertas = 0;
+						$ofertaMasAlta = ObtenerOfertaMasAlta($con, $id, $semana, $email, $cantidadOfertas);
+						if ($ofertaMasAlta > $listarDatosSubasta['sub_precio_base']) {
+							$ofertaMinima = $ofertaMasAlta+100;
+						} else {
+							$ofertaMinima = $listarDatosSubasta['sub_precio_base'];
+						}
 				?>
+				<p id="subtitulo">Ofertar en subasta.</p>
+				<p>El precio base para ofertar es de $<?php echo $listarDatosSubasta['sub_precio_base'] ?></p>
+				<?php 
+					if ($ofertaMasAlta == 0) echo '<p>Nadie ha ofertado aun por esta propiedad.</p>';
+					else echo '<p>La oferta mas alta es de '.$ofertaMasAlta.' por '.$email.'</p>';
+				?>
+				<form method="post" action="ver-residencia.php?id=<?php echo $id?>&semana=<?php echo $semana?>&ofertar=1">
+					<p><input class="campo-formulario" name="oferta" type="number" placeholder="Cantidad a ofertar (minimo $<?php echo $ofertaMinima ?>)"></p>
+					<p><input class="campo-formulario" name="oferta" placeholder="Dirección de e-mail"></p>
+					<input class="boton" type="submit" value="Ofertar en subasta">
+				</form>
 				<?php 
 					}
 				if (esAdmin()) {
-					?>
-					<p id="subtitulo">Controles administrativos.</p>
-					<p><a href="crear-subasta.php?id=<?=$id?>" style="color: green">Crear subasta.</a></p>
-					<p><a href="modificar-residencia.php?id=<?=$id?>" style="color: green">Modificar residencia.</a></p>
-					<p><a href="eliminar-residencia.php?id=<?=$id?>" style="color: red">Eliminar residencia.</a></p>
-				<?php
+					echo '<p id="subtitulo">Controles administrativos.</p>';
+					if ($subOfertable) echo '<p><a href="cerrar-subasta.php?id='.$id.'" style="color: green">Cerrar subasta.</a></p>';
+					else echo '<p><a href="crear-subasta.php?id='.$id.'" style="color: green">Crear subasta.</a></p>';
+					echo '<p><a href="modificar-residencia.php?id='.$id.'" style="color: green">Modificar residencia.</a></p>';
+					echo '<p><a href="eliminar-residencia.php?id='.$id.'" style="color: red">Eliminar residencia.</a></p>';
 				}
 				?>
 			</div>
