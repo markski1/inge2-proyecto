@@ -17,6 +17,36 @@
     	header('Location: index.php');
     }
 
+    if(isset($_GET['ofertar']) && $_GET['ofertar'] == 1) {
+    	if ($semana != -1){
+	    	$oferta = htmlspecialchars(mysqli_real_escape_string($con, $_POST['oferta']));
+	    	$email = htmlspecialchars(mysqli_real_escape_string($con, $_POST['email']));
+	    	$obtenerSubastaAOfertar = mysqli_query($con, "SELECT * FROM semanas WHERE id=".$semana);
+	    	$datosSubastaOfertar = mysqli_fetch_array($obtenerSubastaAOfertar);
+	    	$ofertaAPasar = ObtenerOfertaMasAlta($con, $id, $semana, $email_descartable, $cantidadOfertas_descartable);
+	    	if ($datosSubastaOfertar['sub_precio_base'] > $ofertaAPasar) {
+	    		$ofertaAPasar = $datosSubastaOfertar['sub_precio_base'];
+	    	} else {
+	    		$ofertaAPasar += 100;
+	    	}
+	    	if ($oferta >= $ofertaAPasar) {
+	    		if ($email == '') {
+	    			echo '<div class="error"><p>No ingreso un e-mail valido.</p></div>';
+	    		} else {
+	    			$agregarOferta = mysqli_query($con, "INSERT INTO subastas (residencia, semana, email, oferta) VALUES ('".$id."', '".$semana."', '".$email."', '".$oferta."')");
+	    			if ($agregarOferta) {
+	    				echo '<div class="exito"><p>Has ofertado con exito.</p></div>';
+	    			} else {
+	    				echo '<div class="error"><p>Error al crear oferta.</p></div>';
+	    			}
+	    		}
+	    	} else {
+	    		echo '<div class="error"><p>Su oferta no es lo suficientemente alta.</p></div>';
+	    	}
+    	} else {
+    		echo '<div class="error"><p>Error desconocido.</p></div>';
+    	}
+    } 
 
 	// se bajan los datos de la residencia en $residencia
     $residencia = mysqli_query($con, "SELECT * FROM residencias WHERE id=".$id);
@@ -93,21 +123,21 @@
 						$email = '';
 						$cantidadOfertas = 0;
 						$ofertaMasAlta = ObtenerOfertaMasAlta($con, $id, $semana, $email, $cantidadOfertas);
-						if ($ofertaMasAlta > $listarDatosSubasta['sub_precio_base']) {
+						if ($ofertaMasAlta >= $listarDatosSubasta['sub_precio_base']) {
 							$ofertaMinima = $ofertaMasAlta+100;
 						} else {
 							$ofertaMinima = $listarDatosSubasta['sub_precio_base'];
 						}
 				?>
 				<p id="subtitulo">Ofertar en subasta.</p>
-				<p>El precio base para ofertar es de $<?php echo $listarDatosSubasta['sub_precio_base'] ?></p>
+				<p>El precio base es de $<?php echo $listarDatosSubasta['sub_precio_base'] ?></p>
 				<?php 
 					if ($ofertaMasAlta == 0) echo '<p>Nadie ha ofertado aun por esta propiedad.</p>';
 					else echo '<p>La oferta mas alta es de '.$ofertaMasAlta.' por '.$email.'</p>';
 				?>
 				<form method="post" action="ver-residencia.php?id=<?php echo $id?>&semana=<?php echo $semana?>&ofertar=1">
 					<p><input class="campo-formulario" name="oferta" type="number" placeholder="Cantidad a ofertar (minimo $<?php echo $ofertaMinima ?>)"></p>
-					<p><input class="campo-formulario" name="oferta" placeholder="Dirección de e-mail"></p>
+					<p><input class="campo-formulario" name="email" placeholder="Dirección de e-mail"></p>
 					<input class="boton" type="submit" value="Ofertar en subasta">
 				</form>
 				<?php 
