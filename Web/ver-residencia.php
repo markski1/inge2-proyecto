@@ -5,6 +5,12 @@
 	include('componentes/funciones-residencia.php');
 
 	$id = mysqli_real_escape_string($con, $_GET['id']);
+	if (isset($_GET['semana'])) {
+		if ($_GET['semana'] == '*') $semana = -1;
+		else $semana = htmlspecialchars(mysqli_real_escape_string($con, $_GET['semana']));
+	} else {
+		$semana = -1;
+	}
 
     // si el ID esta vacio, se asume un error y se envia al index
     if(!isset($id) || empty($id)){
@@ -64,17 +70,27 @@
 				<p><span class="color-hsh"><b>Descripción:</b></span> <?=utf8_decode($datos_residencia['descripcion'])?></p>
 				<select id="semanas" name="semana" onchange="elegirSemana();">
 				<option value="*">Seleccionar semana</option>
-				<?php $subastas = ListarSemanas($con, $id); ?>
+				<?php $subastas = ListarSemanas($con, $id, false, $semana); ?>
 				</select>
 				<?php 
+					$subOfertable = false;
 					if ($subastas > 0) {
-						if ($subastas == 1) echo '<p>Esta propiedad tiene 1 subasta en curso.';
-						else echo '<p>Esta propiedad tiene '.$subastas.' subastas en curso.';
+						if ($semana != -1) {
+							echo '<p>Esta semana tiene una subasta en curso.';
+							$subOfertable = true;
+						} else {
+							if ($subastas == 1) echo '<p>Esta propiedad tiene 1 subasta en curso.';
+							else echo '<p>Esta propiedad tiene '.$subastas.' subastas en curso.';
+						}
 					} else {
-						echo '<p>Esta propiedad no tiene subastas en curso.</p>';
+						if ($semana != -1) echo '<p>Esta semana no tiene subasta en curso.';
+						else echo '<p>Esta propiedad no tiene subastas en curso.</p>';
 					}
+
+					if ($subOfertable) {
 				?>
 				<?php 
+					}
 				if (esAdmin()) {
 					?>
 					<p id="subtitulo">Controles administrativos.</p>

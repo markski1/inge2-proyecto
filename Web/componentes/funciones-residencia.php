@@ -15,7 +15,7 @@ function CrearSemanas($con, $id) {
 	}
 }
 
-function ListarSemanas($con, $id, $validar = false) {
+function ListarSemanas($con, $id, $validar = false, $semana = -1) {
 	// Seleccionamos el localizador "es-AR" para listar los meses en español
 	setlocale(LC_TIME, "es-AR");
 	// agarramos todas las semanas de la residencia
@@ -26,7 +26,6 @@ function ListarSemanas($con, $id, $validar = false) {
 		$fechaLimite = time();
 		$fechaLimite = strtotime("+6 month", $fechaLimite);
 	}
-
 
 	while($listarsemanas = mysqli_fetch_array($sql)){
 		// Tomamos la fecha de la base de datos, y la convertimos del formato de fecha SQL al de PHP
@@ -41,14 +40,23 @@ function ListarSemanas($con, $id, $validar = false) {
 		$texto = $comienzoSemana." hasta ".$finSemana;
 
 		// si se pide validar, y la fecha es mayor a 6 meses, se le pone un fondo rojo.
+		if ($semana == $listarsemanas['id']) {
+			$tex = 'selected="true"';
+		} else {
+			$tex = '';
+		}
 		if ($validar && $fecha > $fechaLimite) {
-			echo '<option style="background-color: #FF1308;" value="'.$listarsemanas['id'].'">'.$texto.'</option>';
+			echo '<option '.$tex.' style="background-color: #FF1308;" value="'.$listarsemanas['id'].'">'.$texto.'</option>';
 		} else {
 			if ($listarsemanas['subasta'] > 0) {
-				echo '<option style="background-color: #33FF1E;" value="'.$listarsemanas['id'].'">'.$texto.'</option>';
-				$subCont++;
+				echo '<option '.$tex.' style="background-color: #33FF1E;" value="'.$listarsemanas['id'].'">'.$texto.'</option>';
+				if ($semana == -1) {
+					$subCont++;
+				} else if ($semana == $listarsemanas['id']) {
+					$subCont++;
+				}
 			} else {
-				echo '<option value="'.$listarsemanas['id'].'">'.$texto.'</option>';
+				echo '<option '.$tex.' value="'.$listarsemanas['id'].'">'.$texto.'</option>';
 			}
 		}
 	}
