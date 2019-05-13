@@ -2,7 +2,17 @@
 if (isset($_GET['error'])) {
 	switch ($_GET['error']) {
 		case 1:
-			echo "<div class='error'><p>ERROR: Intentaste acceder a un sitio restringido.</p></div>";
+			echo "<div class='error'><p>Intentaste acceder a un sitio restringido.</p></div>";
+			break;
+		case 2:
+			echo "<div class='error'><p>Error al eliminar residencia.</p></div>";
+			break;
+	}
+}
+if (isset($_GET['exito'])) {
+	switch($_GET['exito']) {
+		case 1:
+			echo "<div class='exito'><p>Residencia eliminada con éxito.</p></div>";
 			break;
 	}
 }

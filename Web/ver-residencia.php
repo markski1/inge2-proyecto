@@ -68,6 +68,12 @@
 			var redireccion = redireccionAux.concat(semanaElegida);
 			window.location = redireccion;
 		}
+		function confirmarEliminar() {
+			var confirmacion=confirm("Seguro que queres eliminar esta residencia?");
+			if (confirmacion) {
+				window.location = "eliminar-residencia.php?id=<?php echo $id ?>";
+			}
+		}
 	</script>
 </head>
 <body>
@@ -147,7 +153,7 @@
 					if ($subOfertable) echo '<p><a href="cerrar-subasta.php?id='.$id.'" style="color: green">Cerrar subasta.</a></p>';
 					else echo '<p><a href="crear-subasta.php?id='.$id.'" style="color: green">Crear subasta.</a></p>';
 					echo '<p><a href="modificar-residencia.php?id='.$id.'" style="color: green">Modificar residencia.</a></p>';
-					echo '<p><a href="eliminar-residencia.php?id='.$id.'" style="color: red">Eliminar residencia.</a></p>';
+					echo '<p><a onclick="confirmarEliminar()" href="#" style="color: red">Eliminar residencia.</a></p>';
 				}
 				?>
 			</div>
