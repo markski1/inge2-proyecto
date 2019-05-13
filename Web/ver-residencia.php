@@ -23,13 +23,7 @@
 	    	$email = htmlspecialchars(mysqli_real_escape_string($con, $_POST['email']));
 	    	$obtenerSubastaAOfertar = mysqli_query($con, "SELECT * FROM semanas WHERE id=".$semana);
 	    	$datosSubastaOfertar = mysqli_fetch_array($obtenerSubastaAOfertar);
-	    	$ofertaAPasar = ObtenerOfertaMasAlta($con, $id, $semana, $email_descartable, $cantidadOfertas_descartable);
-	    	if ($datosSubastaOfertar['sub_precio_base'] > $ofertaAPasar) {
-	    		$ofertaAPasar = $datosSubastaOfertar['sub_precio_base'];
-	    	} else {
-	    		$ofertaAPasar += 100;
-	    	}
-	    	if ($oferta >= $ofertaAPasar) {
+ 	    	if (EsOfertaValida($con, $semana, $id, $oferta, $datosSubastaOfertar['sub_precio_base'])) {
 	    		if ($email == '') {
 	    			echo '<div class="error"><p>No ingreso un e-mail valido.</p></div>';
 	    		} else {

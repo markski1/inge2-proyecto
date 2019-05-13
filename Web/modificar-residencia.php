@@ -179,13 +179,15 @@
 					</tr>
 					<tr>
 						<td style="width: 200px;">
-							<span>Descripción:</span></td>
+							<span>Descripción:</span>
+						</td>
 							<td>
 								<textarea name="desc" style="border: 1px solid black; width: 400px; height: 200px; padding: 15px;" placeholder="Descripción de la residencia." id="desc"><?php echo $datosResidencia['descripcion'] ?></textarea>
 							</td>
 					</tr>
 				</table>
 				<input class="boton" type="submit" value="Actualizar residencia.">
+				<p><a href="ver-residencia.php?id=<?php echo $id ?>">Volver a residencia.</a></p>
 			</form>
 		</div>
 		<div style="clear: both;"></div>

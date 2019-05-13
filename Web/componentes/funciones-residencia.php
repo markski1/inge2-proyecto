@@ -74,3 +74,14 @@ function ObtenerOfertaMasAlta($con, $res, $sem, &$email, &$cantidadOfertas) {
 		return 0;
 	}
 }
+
+function EsOfertaValida($con, $sem, $res, $oferta, $base) {
+	$sql = mysqli_query($con, "SELECT * FROM subastas WHERE residencia=".$res." AND semana=".$sem." ORDER BY oferta DESC");
+	if (mysqli_num_rows($sql) > 0) {
+		$datosUltimaOferta = mysqli_fetch_array($sql);
+		return $oferta >= ($datosUltimaOferta['oferta']+100);
+	} else {
+		return $oferta >= $base;
+	}
+	return false;
+}
