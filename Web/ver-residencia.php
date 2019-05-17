@@ -100,22 +100,31 @@
 				<p><span class="color-hsh"><b>Descripción:</b></span> <?=utf8_decode($datos_residencia['descripcion'])?></p>
 				<select id="semanas" name="semana" onchange="elegirSemana();">
 				<option value="*">Seleccionar semana</option>
-				<?php $subastas = ListarSemanas($con, $id, false, $semana); ?>
+				<?php $subastas = ListarSemanas($con, $id, false, $semana, $estado); ?>
 				</select>
 				<?php 
 					$subOfertable = false;
-					if ($subastas > 0) {
-						if ($semana != -1) {
-							echo '<p>Esta semana tiene una subasta en curso.</p>';
+					switch ($estado) {
+						case 1:
 							$subOfertable = true;
-						} else {
-							if ($subastas == 1) echo '<p>Esta propiedad tiene 1 subasta en curso.';
-							else echo '<p>Esta propiedad tiene '.$subastas.' subastas en curso.';
-						}
-					} else {
-						if ($semana != -1) echo '<p>Esta semana no tiene subasta en curso.';
-						else echo '<p>Esta propiedad no tiene subastas en curso.</p>';
+							echo '<p>Esta semana esta en subasta.</p>';
+							break;
+
+						case 2:
+							echo '<p>Esta semana solo puede ser reservada por un usuario premium.</p>';
+							break;
+
+						case 3:
+							echo '<p>Esta semana ya esta reservada.</p>';
+							break;
+						
+						default:
+							if ($subastas > 0) {
+								echo '<p>Esta semana tiene una subasta en curso. <a href="./ver-residencia.php?id='.$id.'&semana='.$subastas.'">Ir a subasta.</a></p>';
+							} else echo '<p>Esta propiedad no tiene subastas en curso.</p>';
+							break;
 					}
+					
 
 					if ($subOfertable) {
 						$obtenerDatosSubasta = mysqli_query($con, "SELECT * FROM `semanas` WHERE residencia=".$id." AND id=".$semana);

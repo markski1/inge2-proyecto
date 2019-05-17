@@ -50,10 +50,8 @@
 				<p><b>Crear subasta para la propiedad</b> <?=$datos_residencia['nombre']?></p>
 				<form method="POST" action="crear-subasta.php?id=<?php echo $id; ?>&crear=1" onsubmit="return validarCrearSubasta()">
 					<p>Precio base: <input class="campo-formulario" name="precio"></p>
-					<p>Semana: <select id="semana" name="semana">
-					<option class="campo-formulario" value="*">Seleccionar semana</option>
-					<?php $subastas = ListarSemanas($con, $id, true); ?>
-					</select></p>
+					<p>Semana: <?php $semanaDeSubasta = ObtenerSemanaSubastable($con, $id); ?></p>
+					<input hidden="true" name="semana" value="<?php echo $semanaDeSubasta ?>">
 					<input type="submit" class="boton" value="Crear subasta">
 				</form>
 				<p><a href="ver-residencia.php?id=<?php echo $id ?>">Volver a residencia.</a></p>
