@@ -1,5 +1,6 @@
 <?php
 	// se vuelca todo en un array llamado listar_residencias, y se hace un while por cada elemento.
+	$listados = 0;
 	while($listar_residencias = mysqli_fetch_array($residencias)){
 		// crear divisor y colocar imagen
 		echo '<div class="residencia-listado">
@@ -28,5 +29,9 @@
 		echo '" class="no-subrayado">Ver residencia.</a></span></div>
 			</div>
 		</hr>';
+		$listados++;
+	}
+	if ($listados == 0) {
+		echo "No se encontraron residencias en la base de datos.";
 	}
 ?>

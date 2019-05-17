@@ -114,3 +114,11 @@ function EsOfertaValida($con, $sem, $res, $oferta, $base) {
 	}
 	return false;
 }
+
+function ChequearExisteResidencia($con, $nombre, $ciudad, $calle, $numero) {
+	$sql = mysqli_query($con, "SELECT * FROM residencias WHERE nombre='".$nombre."' AND localizacion='".$ciudad."' AND calle='".$calle."' AND numero='".$numero."' LIMIT 1");
+	if (mysqli_num_rows($sql) == 0) {
+		return 0;
+	}
+	return 1;
+}

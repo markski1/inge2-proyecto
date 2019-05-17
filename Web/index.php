@@ -37,7 +37,7 @@ if (isset($_GET['exito'])) {
 		<div class="pagina">
 			<span id="subtitulo">Bienvenido.</span>
 			<p><a href="listar-residencias.php">Listar todas nuestras residencias.</a></p>
-			<p><a href="listar-residencias.php?tipo=subasta">Listar nuestras residencias en subasta.</a></p>
+			<!-- <p><a href="listar-residencias.php?tipo=subasta">Listar nuestras residencias en subasta.</a></p> -->
 			
 		</div>
 		<div style="clear: both;"></div>

@@ -74,16 +74,22 @@
 					break;
 			}
 		} else {
-			// addslashes se utiliza para convertir la imagen en binario y asi levantarla a la DB
-			$foto = addslashes(file_get_contents($_FILES['imagen']['tmp_name']));
-			// se envian los datos a la base de datos, si se sube te avisa y si no tambien.
-			$sql = mysqli_query($con, "INSERT INTO residencias (nombre, localizacion, calle, numero, pisoydepto, precio, imagen, descripcion) VALUES ('".$nom."', '".$loc."', '".$cal."','".$num."', '".$pyd."', '".$prec."', '".$foto."', '".$desc."')");
-			if ($sql) {
-				echo '<div class="exito"><p>Residencia agregada con exito.</p></div>';
-				$idNuevaResidencia = mysqli_insert_id($con);
-				CrearSemanas($con, $idNuevaResidencia);
-			} 
-			else echo '<div class="error"><p>Error al agregar residencia.</p></div>';
+			if (!ChequearExisteResidencia($con, $nom, $loc, $cal, $num)){
+				// addslashes se utiliza para convertir la imagen en binario y asi levantarla a la DB
+				$foto = addslashes(file_get_contents($_FILES['imagen']['tmp_name']));
+				// se envian los datos a la base de datos, si se sube te avisa y si no tambien.
+				$sql = mysqli_query($con, "INSERT INTO residencias (nombre, localizacion, calle, numero, pisoydepto, precio, imagen, descripcion) VALUES ('".$nom."', '".$loc."', '".$cal."','".$num."', '".$pyd."', '".$prec."', '".$foto."', '".$desc."')");
+				if ($sql) {
+					echo '<div class="exito"><p>Residencia agregada con exito.</p></div>';
+					$idNuevaResidencia = mysqli_insert_id($con);
+					CrearSemanas($con, $idNuevaResidencia);
+				} 
+				else {
+					echo '<div class="error"><p>Error al agregar residencia.</p></div>';
+				}
+			} else {
+				echo '<div class="error"><p>Ya existe una residencia con estas caracteristicas.</p></div>';
+			}
 
 		}
 
