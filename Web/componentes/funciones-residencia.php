@@ -153,3 +153,18 @@ function ObtenerInfoReserva($con, $residencia, $semana) {
 	}
 }
 
+////////////////////////
+// Devuelve true o false dependiendo de si un ID semana especificado esta reservado o no.
+////////////////////////
+function ChequearSemanaReservada($con, $semana) {
+	$sql = mysqli_query($con, "SELECT reservado FROM semanas WHERE id=".$semana);
+	if ($sql) {
+		$infoReserva = mysqli_fetch_array($sql);
+		if ($infoReserva['reservado'] == 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	return "Error al conectar a la base de datos.";
+}

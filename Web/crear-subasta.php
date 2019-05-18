@@ -51,9 +51,15 @@
 				<form method="POST" action="crear-subasta.php?id=<?php echo $id; ?>&crear=1" onsubmit="return validarCrearSubasta()">
 					<p>Precio base: <input class="campo-formulario" name="precio"></p>
 					<p>Semana: <?php $semanaDeSubasta = ObtenerSemanaSubastable($con, $id); ?></p>
-					<input hidden="true" name="semana" value="<?php echo $semanaDeSubasta ?>">
-					<input type="submit" class="boton" value="Crear subasta">
-				</form>
+					<?php
+						$yaReservado = ChequearSemanaReservada($con, $semanaDeSubasta);
+						if (!$yaReservado) {
+							echo '<input hidden="true" name="semana" value="'.$semanaDeSubasta.'">';
+							echo '<input type="submit" class="boton" value="Crear subasta">';
+						} else {
+							echo '<p>Esta semana no se puede colocar en subasta, porque ya fue reservada.';
+						}
+					?></form>
 				<p><a href="ver-residencia.php?id=<?php echo $id ?>">Volver a residencia.</a></p>
 			</div>
 		</div>
