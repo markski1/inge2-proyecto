@@ -158,7 +158,7 @@
 						<td style="width: 200px;">
 							<span>Piso y depto:</span></td>
 						<td>
-							<input maxlenght="16" name="pyd" class="campo-formulario" placeholder="Dejar vació si no aplica." id="pyd" value="<?php echo $datosResidencia['pisoydepto'] ?>">
+							<input maxlenght="16" name="pyd" class="campo-formulario" placeholder="Dejar vació si no aplica." id="pyd" value="<?php if ($datosResidencia['pisoydepto'] != "NA") echo $datosResidencia['pisoydepto'] ?>">
 						</td>
 					</tr>
 					<tr>
