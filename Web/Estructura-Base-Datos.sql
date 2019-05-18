@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-05-2019 a las 19:46:33
+-- Tiempo de generación: 19-05-2019 a las 01:18:35
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.10
 
@@ -51,7 +51,10 @@ CREATE TABLE `semanas` (
   `residencia` int(4) NOT NULL,
   `fecha` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `subasta` tinyint(1) NOT NULL DEFAULT '0',
-  `sub_precio_base` int(4) NOT NULL DEFAULT '0'
+  `sub_precio_base` int(4) NOT NULL DEFAULT '0',
+  `reservado` int(1) NOT NULL DEFAULT '0',
+  `reservado_por` varchar(50) NOT NULL,
+  `reservado_precio` int(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
