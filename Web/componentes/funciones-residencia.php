@@ -1,5 +1,8 @@
 <?php
 
+////////////////////////
+// Crea las 52 semanas correspondientes a una residencia en la base de datos.
+////////////////////////
 function CrearSemanas($con, $id) {
 	// Definimos "fecha" como un string que contiene el mes, dia y año actual.
 	$fecha = date('M d, Y');
@@ -16,6 +19,10 @@ function CrearSemanas($con, $id) {
 	}
 }
 
+////////////////////////
+// Devuelve el listado de semanas para una residencia especificada, en un formato de Droplist.
+// Devuelve otros valores dependiendo de sus parametros
+////////////////////////
 function ListarSemanas($con, $id, $semana = -1, &$estado) {
 	// Seleccionamos el localizador "es-AR" para listar los meses en español
 	setlocale(LC_TIME, "es-AR");
@@ -67,6 +74,9 @@ function ListarSemanas($con, $id, $semana = -1, &$estado) {
 	return $subCont;
 }
 
+////////////////////////
+// Devuelve el ID de la semana a la que corresponde crear subasta en la fecha dada.
+////////////////////////
 function ObtenerSemanaSubastable($con, $residencia) {
 	setlocale(LC_TIME, "es-AR");
 	// agarramos todas las semanas de la residencia.
@@ -92,6 +102,9 @@ function ObtenerSemanaSubastable($con, $residencia) {
 	return $semanaSubasta['id'];
 }
 
+////////////////////////
+// Devuelve la oferta mas alta en una subasta dada. Si no hay ofertas, devuelve 0.
+////////////////////////
 function ObtenerOfertaMasAlta($con, $res, $sem, &$email, &$cantidadOfertas) {
 	$sql = mysqli_query($con, "SELECT * FROM subastas WHERE residencia=".$res." AND semana=".$sem." ORDER BY oferta DESC");
 	$cantidadOfertas = mysqli_num_rows($sql);
@@ -104,6 +117,9 @@ function ObtenerOfertaMasAlta($con, $res, $sem, &$email, &$cantidadOfertas) {
 	}
 }
 
+////////////////////////
+// Devuelve true o false dependiendo de si una oferta es suficiente para una semana y una subasta dada.
+////////////////////////
 function EsOfertaValida($con, $sem, $res, $oferta, $base) {
 	$sql = mysqli_query($con, "SELECT * FROM subastas WHERE residencia=".$res." AND semana=".$sem." ORDER BY oferta DESC");
 	if (mysqli_num_rows($sql) > 0) {
@@ -115,14 +131,20 @@ function EsOfertaValida($con, $sem, $res, $oferta, $base) {
 	return false;
 }
 
+////////////////////////
+// Devuelve true o false dependiendo de si una residencia con parametros dados ya existe.
+////////////////////////
 function ChequearExisteResidencia($con, $nombre, $ciudad, $calle, $numero) {
 	$sql = mysqli_query($con, "SELECT * FROM residencias WHERE nombre='".$nombre."' AND localizacion='".$ciudad."' AND calle='".$calle."' AND numero='".$numero."' LIMIT 1");
 	if (mysqli_num_rows($sql) == 0) {
-		return 0;
+		return false;
 	}
-	return 1;
+	return false;
 }
 
+////////////////////////
+// Devuelve un texto que especifica quien reservo una semana de una residencia dada, y a cuanto.
+////////////////////////
 function ObtenerInfoReserva($con, $residencia, $semana) {
 	$sql = mysqli_query($con, "SELECT reservado_por, reservado_precio FROM semanas WHERE residencia=".$residencia." AND id=".$semana);
 	if ($sql) {
@@ -130,3 +152,4 @@ function ObtenerInfoReserva($con, $residencia, $semana) {
 		return "Reservado por ".$infoReserva['reservado_por'].", quien pago $".$infoReserva['reservado_precio'];
 	}
 }
+
