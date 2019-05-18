@@ -16,7 +16,7 @@ function CrearSemanas($con, $id) {
 	}
 }
 
-function ListarSemanas($con, $id, $validar = false, $semana = -1, &$estado) {
+function ListarSemanas($con, $id, $semana = -1, &$estado) {
 	// Seleccionamos el localizador "es-AR" para listar los meses en español
 	setlocale(LC_TIME, "es-AR");
 	// agarramos todas las semanas de la residencia
@@ -46,22 +46,22 @@ function ListarSemanas($con, $id, $validar = false, $semana = -1, &$estado) {
 			$tex = '';
 		}
 
-		if ($validar && $fecha > $fechaLimite) {
+		if ($listarsemanas['subasta'] > 0) {
+			echo '<option '.$tex.' style="background-color: #33FF1E;" value="'.$listarsemanas['id'].'">'.$texto.'</option>';
+			if ($semana != $listarsemanas['id']) {
+				$subCont = $listarsemanas['id'];
+			}
+		} else if ($listarsemanas['reservado'] == 1){
 			echo '<option '.$tex.' style="background-color: #FF1308;" value="'.$listarsemanas['id'].'">'.$texto.'</option>';
 		} else {
-			if ($listarsemanas['subasta'] > 0) {
-				echo '<option '.$tex.' style="background-color: #33FF1E;" value="'.$listarsemanas['id'].'">'.$texto.'</option>';
-				if ($semana != $listarsemanas['id']) {
-					$subCont = $listarsemanas['id'];
-				}
-			} else {
-				echo '<option '.$tex.' value="'.$listarsemanas['id'].'">'.$texto.'</option>';
-			}
+			echo '<option '.$tex.' value="'.$listarsemanas['id'].'">'.$texto.'</option>';
 		}
+
+		// Devolver estado de semana seleccionada.
 		if ($semana == $listarsemanas['id']) {
 			if ($listarsemanas['subasta'] > 0) $estado = 1; // En subasta
 			if ($fecha > $fechaLimite) $estado = 2; // Solo premium
-			//if ($listarsemanas['reservado'] == 1) $estado = 3 // reservado
+			if ($listarsemanas['reservado'] == 1) $estado = 3; // reservado
 		}
 	}
 	return $subCont;
@@ -121,4 +121,12 @@ function ChequearExisteResidencia($con, $nombre, $ciudad, $calle, $numero) {
 		return 0;
 	}
 	return 1;
+}
+
+function ObtenerInfoReserva($con, $residencia, $semana) {
+	$sql = mysqli_query($con, "SELECT reservado_por, reservado_precio FROM semanas WHERE residencia=".$residencia." AND id=".$semana);
+	if ($sql) {
+		$infoReserva = mysqli_fetch_array($sql);
+		return "Reservado por ".$infoReserva['reservado_por'].", quien pago $".$infoReserva['reservado_precio'];
+	}
 }

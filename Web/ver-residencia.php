@@ -100,7 +100,7 @@
 				<p><span class="color-hsh"><b>Descripción:</b></span> <?=utf8_decode($datos_residencia['descripcion'])?></p>
 				<select id="semanas" name="semana" onchange="elegirSemana();">
 				<option value="*">Seleccionar semana</option>
-				<?php $subastas = ListarSemanas($con, $id, false, $semana, $estado); ?>
+				<?php $subastas = ListarSemanas($con, $id, $semana, $estado); ?>
 				</select>
 				<?php 
 					$subOfertable = false;
@@ -116,6 +116,9 @@
 
 						case 3:
 							echo '<p>Esta semana ya esta reservada.</p>';
+							if (esAdmin()) {
+								echo ObtenerInfoReserva($con, $id, $semana);
+							}
 							break;
 						
 						default:
@@ -153,7 +156,7 @@
 					}
 				if (esAdmin()) {
 					echo '<p id="subtitulo">Controles administrativos.</p>';
-					if ($subOfertable) echo '<p><a href="cerrar-subasta.php?id='.$id.'" style="color: green">Cerrar subasta.</a></p>';
+					if ($subOfertable) echo '<p><a href="cerrar-subasta.php?id='.$id.'&semana='.$semana.'" style="color: green">Cerrar subasta.</a></p>';
 					else echo '<p><a href="crear-subasta.php?id='.$id.'" style="color: green">Crear subasta.</a></p>';
 					echo '<p><a href="modificar-residencia.php?id='.$id.'" style="color: green">Modificar residencia.</a></p>';
 					echo '<p><a onclick="confirmarEliminar()" href="#" style="color: red">Eliminar residencia.</a></p>';

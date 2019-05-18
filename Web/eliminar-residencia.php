@@ -11,6 +11,7 @@
 	$sql = mysqli_query($con, $query);
 	if ($sql) {
 		$sql = mysqli_query($con, "DELETE FROM `semanas` WHERE residencia=".$id);
+		$sql = mysqli_query($con, "DELETE FROM `subastas` WHERE residencia=".$id);
 		header('Location: index.php?exito=1');
 	}
 	else header('Location: index.php?error=2');
