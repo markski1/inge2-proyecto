@@ -2,6 +2,7 @@
 
 ////////////////////////
 // Crea las 52 semanas correspondientes a una residencia en la base de datos.
+// No retorna nada.
 ////////////////////////
 function CrearSemanas($con, $id) {
 	// Definimos "fecha" como un string que contiene el mes, dia y año actual.
@@ -20,8 +21,8 @@ function CrearSemanas($con, $id) {
 }
 
 ////////////////////////
-// Devuelve el listado de semanas para una residencia especificada, en un formato de Droplist.
-// Devuelve otros valores dependiendo de sus parametros
+// Retorna el listado de semanas para una residencia especificada, en un formato de Droplist.
+// Retorna otros valores dependiendo de sus parametros
 ////////////////////////
 function ListarSemanas($con, $id, $semana = -1, &$estado) {
 	// Seleccionamos el localizador "es-AR" para listar los meses en español
@@ -75,7 +76,7 @@ function ListarSemanas($con, $id, $semana = -1, &$estado) {
 }
 
 ////////////////////////
-// Devuelve el ID de la semana a la que corresponde crear subasta en la fecha dada.
+// Retorna el ID de la semana a la que corresponde crear subasta en la fecha dada.
 ////////////////////////
 function ObtenerSemanaSubastable($con, $residencia) {
 	setlocale(LC_TIME, "es-AR");
@@ -103,7 +104,7 @@ function ObtenerSemanaSubastable($con, $residencia) {
 }
 
 ////////////////////////
-// Devuelve la oferta mas alta en una subasta dada. Si no hay ofertas, devuelve 0.
+// Retorna la oferta mas alta en una subasta dada. Si no hay ofertas, retorna 0.
 ////////////////////////
 function ObtenerOfertaMasAlta($con, $res, $sem, &$email, &$cantidadOfertas) {
 	$sql = mysqli_query($con, "SELECT * FROM subastas WHERE residencia=".$res." AND semana=".$sem." ORDER BY oferta DESC");
@@ -112,13 +113,12 @@ function ObtenerOfertaMasAlta($con, $res, $sem, &$email, &$cantidadOfertas) {
 		$datosUltimaOferta = mysqli_fetch_array($sql);
 		$email = $datosUltimaOferta['email'];
 		return $datosUltimaOferta['oferta'];
-	} else {
-		return 0;
 	}
+	return 0;
 }
 
 ////////////////////////
-// Devuelve true o false dependiendo de si una oferta es suficiente para una semana y una subasta dada.
+// Retorna true o false dependiendo de si una oferta es suficiente para una semana y una subasta dada.
 ////////////////////////
 function EsOfertaValida($con, $sem, $res, $oferta, $base) {
 	$sql = mysqli_query($con, "SELECT * FROM subastas WHERE residencia=".$res." AND semana=".$sem." ORDER BY oferta DESC");
@@ -132,18 +132,18 @@ function EsOfertaValida($con, $sem, $res, $oferta, $base) {
 }
 
 ////////////////////////
-// Devuelve true o false dependiendo de si una residencia con parametros dados ya existe.
+// Retorna true o false dependiendo de si una residencia con parametros dados ya existe.
 ////////////////////////
 function ChequearExisteResidencia($con, $nombre, $ciudad, $calle, $numero) {
 	$sql = mysqli_query($con, "SELECT * FROM residencias WHERE nombre='".$nombre."' AND localizacion='".$ciudad."' AND calle='".$calle."' AND numero='".$numero."' LIMIT 1");
 	if (mysqli_num_rows($sql) == 0) {
 		return false;
 	}
-	return false;
+	return true;
 }
 
 ////////////////////////
-// Devuelve un texto que especifica quien reservo una semana de una residencia dada, y a cuanto.
+// Retorna un texto que especifica quien reservo una semana de una residencia dada, y a cuanto.
 ////////////////////////
 function ObtenerInfoReserva($con, $residencia, $semana) {
 	$sql = mysqli_query($con, "SELECT reservado_por, reservado_precio FROM semanas WHERE residencia=".$residencia." AND id=".$semana);
@@ -151,10 +151,11 @@ function ObtenerInfoReserva($con, $residencia, $semana) {
 		$infoReserva = mysqli_fetch_array($sql);
 		return "Reservado por ".$infoReserva['reservado_por'].", quien pago $".$infoReserva['reservado_precio'];
 	}
+	return false;
 }
 
 ////////////////////////
-// Devuelve true o false dependiendo de si un ID semana especificado esta reservado o no.
+// Retorna true o false dependiendo de si un ID semana especificado esta reservado o no.
 ////////////////////////
 function ChequearSemanaReservada($con, $semana) {
 	$sql = mysqli_query($con, "SELECT reservado FROM semanas WHERE id=".$semana);
