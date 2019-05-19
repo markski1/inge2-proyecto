@@ -32,6 +32,6 @@
 		$listados++;
 	}
 	if ($listados == 0) {
-		echo "No se encontraron residencias en la base de datos.";
+		echo "<p>No hay residencias cargadas ahora mismo.</p>";
 	}
 ?>

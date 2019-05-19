@@ -59,12 +59,12 @@
 		}
 
 		// Higienizar todas las entradas.
-		$nom = htmlspecialchars(mysqli_real_escape_string($con, $_POST['nom']));
-		$loc = htmlspecialchars(mysqli_real_escape_string($con, $_POST['loc']));
-		$cal = htmlspecialchars(mysqli_real_escape_string($con, $_POST['cal']));
+		$nom = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['nom'])));
+		$loc = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['loc'])));
+		$cal = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['cal'])));
 		$num = htmlspecialchars(mysqli_real_escape_string($con, $_POST['num']));
 		if (!isset($pyd)) {
-			$pyd = htmlspecialchars(mysqli_real_escape_string($con, $_POST['pyd']));
+			$pyd = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['pyd'])));
 		}
 		$prec = htmlspecialchars(mysqli_real_escape_string($con, $_POST['prec']));
 		$desc = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['desc'])));
@@ -129,7 +129,7 @@
 							<span>Nombre:</span>
 						</td>
 						<td>
-							<input maxlength="128" name="nom" class="campo-formulario" placeholder="Breve nombre para la residencia." id="nom" value="<?php echo $datosResidencia['nombre'] ?>">
+							<input maxlength="128" name="nom" class="campo-formulario" placeholder="Breve nombre para la residencia." id="nom" value="<?php echo utf8_decode($datosResidencia['nombre']) ?>">
 						</td>
 					</tr>
 					<tr>
@@ -137,14 +137,14 @@
 							<span>Ubicación:</span>
 						</td>
 						<td>
-							<input maxlength="64" name="loc"class="campo-formulario" placeholder="Ciudad y provincia." id="loc" value="<?php echo $datosResidencia['localizacion'] ?>">
+							<input maxlength="64" name="loc"class="campo-formulario" placeholder="Ciudad y provincia." id="loc" value="<?php echo utf8_decode($datosResidencia['localizacion']) ?>">
 						</td>
 					</tr>
 					<tr>
 						<td style="width: 200px;">
 							<span>Calle:</span></td>
 						<td>
-							<input maxlength="64" name="cal" class="campo-formulario" placeholder="Calle donde se encuentra la propiedad." id="calle" value="<?php echo $datosResidencia['calle'] ?>">
+							<input maxlength="64" name="cal" class="campo-formulario" placeholder="Calle donde se encuentra la propiedad." id="calle" value="<?php echo utf8_decode($datosResidencia['calle']) ?>">
 						</td>
 					</tr>
 					<tr>
@@ -158,7 +158,7 @@
 						<td style="width: 200px;">
 							<span>Piso y depto:</span></td>
 						<td>
-							<input maxlenght="16" name="pyd" class="campo-formulario" placeholder="Dejar vació si no aplica." id="pyd" value="<?php if ($datosResidencia['pisoydepto'] != "NA") echo $datosResidencia['pisoydepto'] ?>">
+							<input maxlenght="16" name="pyd" class="campo-formulario" placeholder="Dejar vació si no aplica." id="pyd" value="<?php if ($datosResidencia['pisoydepto'] != "NA") echo utf8_decode($datosResidencia['pisoydepto']) ?>">
 						</td>
 					</tr>
 					<tr>
@@ -182,7 +182,7 @@
 							<span>Descripción:</span>
 						</td>
 							<td>
-								<textarea name="desc" style="border: 1px solid black; width: 400px; height: 200px; padding: 15px;" placeholder="Descripción de la residencia." id="desc"><?php echo $datosResidencia['descripcion'] ?></textarea>
+								<textarea name="desc" style="border: 1px solid black; width: 400px; height: 200px; padding: 15px;" placeholder="Descripción de la residencia." id="desc"><?php echo utf8_decode($datosResidencia['descripcion']) ?></textarea>
 							</td>
 					</tr>
 				</table>
