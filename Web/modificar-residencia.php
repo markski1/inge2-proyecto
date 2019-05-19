@@ -134,7 +134,7 @@
 					</tr>
 					<tr>
 						<td style="width: 200px;">
-							<span>Localización:</span>
+							<span>Ubicación:</span>
 						</td>
 						<td>
 							<input maxlength="64" name="loc"class="campo-formulario" placeholder="Ciudad y provincia." id="loc" value="<?php echo $datosResidencia['localizacion'] ?>">
