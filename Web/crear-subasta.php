@@ -47,7 +47,7 @@
 		<div class="pagina">
 			<span id="subtitulo" class="color-hsh"><b>Creando subasta.</b></span></br>
 			<div class="contenido-pagina">
-				<p><b>Crear subasta para la propiedad</b> <?=$datos_residencia['nombre']?></p>
+				<p><b>Crear subasta para la propiedad</b> <?php echo utf8_decode($datos_residencia['nombre'])?></p>
 				<form method="POST" action="crear-subasta.php?id=<?php echo $id; ?>&crear=1" onsubmit="return validarCrearSubasta()">
 					<p>Precio base: <input class="campo-formulario" name="precio"></p>
 					<p>Semana: <?php $semanaDeSubasta = ObtenerSemanaSubastable($con, $id); ?></p>

@@ -79,14 +79,14 @@
 			<?php include('modulos/sidebar.php') ?>
 		</div>
 		<div class="pagina">
-			<span id="subtitulo" class="color-hsh"><b><?=$datos_residencia['nombre']?></b></span></br>
+			<span id="subtitulo" class="color-hsh"><b><?php echo utf8_decode($datos_residencia['nombre'])?></b></span></br>
 			<div class="contenido-pagina">
 				<div class="alinear-izquierda" style="width: 45%">
-					<img style="width: 300px; height: 225px;" src="componentes/imagen.php?id=<?=$id?>"/>
+					<img style="width: 300px; height: 225px;" src="componentes/imagen.php?id=<?php echo $id?>"/>
 				</div>
 				<div class="alinear-derecha" style="width: 52.5%;">
-					<p><span class="color-hsh"><b>Ciudad:</b></span> <?=$datos_residencia['localizacion']?></p>
-					<p><span class="color-hsh"><b>Dirección:</b></span> <?=$datos_residencia['calle']?>, <?=$datos_residencia['numero']?></p>
+					<p><span class="color-hsh"><b>Ciudad:</b></span> <?php echo utf8_decode($datos_residencia['localizacion'])?></p>
+					<p><span class="color-hsh"><b>Dirección:</b></span> <?php echo utf8_decode($datos_residencia['calle'])?>, <?php echo $datos_residencia['numero']?></p>
 					<?php
 					if ($datos_residencia['pisoydepto'] != "NA") {
 							echo '<p><span class="color-hsh"><b>Piso y depto:</b></span> ';
@@ -94,10 +94,10 @@
 							echo '</p>';
 						}
 					?>
-					<p><span class="color-hsh"><b>Precio por semana:</b></span> $<?=$datos_residencia['precio']?></p>
+					<p><span class="color-hsh"><b>Precio por semana:</b></span> $<?php echo $datos_residencia['precio']?></p>
 				</div>
 				<div style="clear: both;"></div>
-				<p><span class="color-hsh"><b>Descripción:</b></span> <?=utf8_decode($datos_residencia['descripcion'])?></p>
+				<p><span class="color-hsh"><b>Descripción:</b></span> <?php echo utf8_decode($datos_residencia['descripcion'])?></p>
 				<select id="semanas" name="semana" onchange="elegirSemana();">
 				<option value="*">Seleccionar semana</option>
 				<?php $subastas = ListarSemanas($con, $id, $semana, $estado); ?>

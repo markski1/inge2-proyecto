@@ -12,13 +12,13 @@
 		echo '</div>
 				<div class="alinear-derecha" style="width: 63%; min-width: 370px; padding-top: 10px; padding-left: 14px;">
 					<span id="subtitulo" class="color-hsh">';
-		echo $listar_residencias['nombre'];
+		echo utf8_decode($listar_residencias['nombre']);
 		echo '</span></br>';
 		// se lista cada pieza de información
-		echo '<p>'.$listar_residencias['localizacion'].'</p>';
-		echo '<p>Calle '.$listar_residencias['calle'].', '.$listar_residencias['numero'].'</p>';
+		echo '<p>'.utf8_decode($listar_residencias['localizacion']).'</p>';
+		echo '<p>Calle '.utf8_decode($listar_residencias['calle']).', '.$listar_residencias['numero'].'</p>';
 		if ($listar_residencias['pisoydepto'] != "NA") {
-			echo '<p>'.$listar_residencias['pisoydepto'].'</p>';
+			echo '<p>'.utf8_decode($listar_residencias['pisoydepto']).'</p>';
 		}
 		echo '<p style="color:green">$'.$listar_residencias['precio'].'</p>';
 		// cerrar divisores y poner el boton de Mas informacion
@@ -32,6 +32,6 @@
 		$listados++;
 	}
 	if ($listados == 0) {
-		echo "No se encontraron residencias en la base de datos.";
+		echo "<p>No hay residencias cargadas ahora mismo.</p>";
 	}
 ?>

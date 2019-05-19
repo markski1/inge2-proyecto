@@ -7,6 +7,9 @@ if (isset($_GET['error'])) {
 		case 2:
 			echo "<div class='error'><p>Error al eliminar residencia.</p></div>";
 			break;
+		case 3:
+			echo "<div class='error'><p>No se puede eliminar esta residencia porque tiene una o mas semanas reservadas.</p></div>";
+			break;
 	}
 }
 if (isset($_GET['exito'])) {
@@ -14,6 +17,7 @@ if (isset($_GET['exito'])) {
 		case 1:
 			echo "<div class='exito'><p>Residencia eliminada con éxito.</p></div>";
 			break;
+
 	}
 }
 
