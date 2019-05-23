@@ -94,7 +94,6 @@
 							echo '</p>';
 						}
 					?>
-					<p><span class="color-hsh"><b>Precio por semana:</b></span> $<?php echo $datos_residencia['precio']?></p>
 				</div>
 				<div style="clear: both;"></div>
 				<p><span class="color-hsh"><b>Descripción:</b></span> <?php echo utf8_decode($datos_residencia['descripcion'])?></p>

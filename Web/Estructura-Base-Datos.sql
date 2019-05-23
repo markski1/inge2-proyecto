@@ -35,7 +35,6 @@ CREATE TABLE `residencias` (
   `localizacion` varchar(64) NOT NULL DEFAULT '',
   `numero` int(2) NOT NULL DEFAULT '0',
   `pisoydepto` varchar(32) NOT NULL DEFAULT 'NA',
-  `precio` int(4) NOT NULL DEFAULT '0',
   `imagen` blob NOT NULL,
   `descripcion` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

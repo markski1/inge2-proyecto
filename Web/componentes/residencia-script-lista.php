@@ -20,7 +20,6 @@
 		if ($listar_residencias['pisoydepto'] != "NA") {
 			echo '<p>'.utf8_decode($listar_residencias['pisoydepto']).'</p>';
 		}
-		echo '<p style="color:green">$'.$listar_residencias['precio'].'</p>';
 		// cerrar divisores y poner el boton de Mas informacion
 		echo '</div>
 				<div style="clear: both;"></div>

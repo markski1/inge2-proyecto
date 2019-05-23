@@ -23,7 +23,7 @@
 		$error = 0;
 
 		// Chequear que los campos esten llenos
-		$campos = array('nom', 'loc', 'cal', 'num', 'prec', 'desc'); 
+		$campos = array('nom', 'loc', 'cal', 'num', 'desc'); 
 		foreach($campos AS $campo) {
 			if(!isset($_POST[$campo]) || empty($_POST[$campo])) {
 				$error = 1;
@@ -34,8 +34,8 @@
 			$pyd = 'NA';
 		}
 
-		// Chequear que numero y precio sean numeros.
-		if(!filter_var($_POST['num'], FILTER_VALIDATE_INT) || !filter_var($_POST['prec'], FILTER_VALIDATE_INT)){
+		// Chequear que numero sea numero.
+		if(!filter_var($_POST['num'], FILTER_VALIDATE_INT))){
 			$error = 2;
 		}
 
@@ -66,7 +66,6 @@
 		if (!isset($pyd)) {
 			$pyd = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['pyd'])));
 		}
-		$prec = htmlspecialchars(mysqli_real_escape_string($con, $_POST['prec']));
 		$desc = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['desc'])));
 
 		if ($error != 0) {
@@ -75,7 +74,7 @@
 					echo "<div class='error'><p>Error: Uno o mas campos están vacios.</p></div>";
 					break;
 				case 2:
-					echo "<div class='error'><p>Error: Numero y precio no pueden tener letras.</p></div>";
+					echo "<div class='error'><p>Error: Numero no puede tener letras.</p></div>";
 					break;
 				case 4:
 					echo "<div class='error'><p>Error: La imagen subida no es valida.</p></div>";
@@ -85,9 +84,9 @@
 			// addslashes se utiliza para convertir la imagen en binario y asi levantarla a la DB
 			if ($imagen == 1) {
 				$foto = addslashes(file_get_contents($_FILES['imagen']['tmp_name']));
-				$sql = mysqli_query($con, "UPDATE `residencias` SET `nombre`='".$nom."', `localizacion`='".$loc."', `calle`='".$cal."', `numero`='".$num."', `pisoydepto`='".$pyd."', `precio`='".$prec."', `imagen`='".$foto."', `descripcion`='".$desc."'");
+				$sql = mysqli_query($con, "UPDATE `residencias` SET `nombre`='".$nom."', `localizacion`='".$loc."', `calle`='".$cal."', `numero`='".$num."', `pisoydepto`='".$pyd."', `imagen`='".$foto."', `descripcion`='".$desc."'");
 			} else {
-				$sql = mysqli_query($con, "UPDATE `residencias` SET `nombre`='".$nom."', `localizacion`='".$loc."', `calle`='".$cal."', `numero`='".$num."', `pisoydepto`='".$pyd."', `precio`='".$prec."', `descripcion`='".$desc."'");
+				$sql = mysqli_query($con, "UPDATE `residencias` SET `nombre`='".$nom."', `localizacion`='".$loc."', `calle`='".$cal."', `numero`='".$num."', `pisoydepto`='".$pyd."', `descripcion`='".$desc."'");
 			}
 			// se envian los datos a la base de datos, si se sube te avisa y si no tambien.
 			
@@ -159,14 +158,6 @@
 							<span>Piso y depto:</span></td>
 						<td>
 							<input maxlenght="16" name="pyd" class="campo-formulario" placeholder="Dejar vació si no aplica." id="pyd" value="<?php if ($datosResidencia['pisoydepto'] != "NA") echo utf8_decode($datosResidencia['pisoydepto']) ?>">
-						</td>
-					</tr>
-					<tr>
-						<td style="width: 200px;">
-							<span>Precio base:</span>
-						</td>
-						<td>
-							<input type="number" maxlenght="16" name="prec" class="campo-formulario" placeholder="Precio en pesos." id="precio" value="<?php echo $datosResidencia['precio'] ?>">
 						</td>
 					</tr>
 					<tr>
