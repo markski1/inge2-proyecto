@@ -141,7 +141,11 @@
 						}
 				?>
 				<p id="subtitulo">Ofertar en subasta.</p>
+				<?php 
+					$finSubasta = ObtenerFinSubasta($con, $semana, false);
+				?>
 				<p>El precio base es de $<?php echo $listarDatosSubasta['sub_precio_base'] ?></p>
+				<p>La subasta finaliza el <?php echo $finSubasta ?></p>
 				<?php 
 					if ($ofertaMasAlta == 0) echo '<p>Nadie ha ofertado aun por esta propiedad.</p>';
 					else echo '<p>La oferta mas alta es de '.$ofertaMasAlta.' por '.$email.'</p>';
