@@ -180,3 +180,20 @@ hr {
 	border-bottom: 1px solid black;
 	width: 400px;
 }
+
+.campo-sidebar {
+	padding: 5px;
+	margin: 5px;
+	border: 0;
+	background-color: white;
+	width: 89%;
+}
+
+.boton-sidebar {
+	padding: 5px;
+	margin: 5px;
+	border: 0;
+	background-color: #4C4D4F;
+	width: 92%;
+	color: white;
+}

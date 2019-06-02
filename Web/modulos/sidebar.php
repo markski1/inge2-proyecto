@@ -1,12 +1,12 @@
-<span id="subtitulo">Menu</span>
-<p><b>Usuario:</b> demo.</p>
-<?php 
-if (esAdmin()) {
-	echo '<p><a href="componentes/admin.php">Desactivar modo administrador</a></p>';
-	echo '<p><a href="agregar.php">Agregar una residencia.</a></p>';
-	echo '<p><a href=""></a></p>';
-} else {
-	echo '<p><a href="componentes/admin.php">Activar modo administrador</a></p>';
-}
-?> 
+<form method="POST" action="login.php">
+	<span id="subtitulo">
+		Menu
+	</span>
+	<p>Iniciar Sesión</p>
+	<input placeholder="Dirección de e-mail" type="text" name="nick" class="campo-sidebar">
+	<input placeholder="Contraseña" type="password" name="nick" class="campo-sidebar">
+	<input type="submit" value="Iniciar" class="boton-sidebar">
+</form>
 
+<p>¿No estas registrado?</p>
+<p><a href="registro.php">Crear una cuenta</a></p>
