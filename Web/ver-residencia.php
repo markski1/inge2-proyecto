@@ -63,9 +63,15 @@
 			window.location = redireccion;
 		}
 		function confirmarEliminar() {
-			var confirmacion=confirm("Seguro que queres eliminar esta residencia?");
+			var confirmacion=confirm("¿Seguro que queres eliminar esta residencia?");
 			if (confirmacion) {
 				window.location = "eliminar-residencia.php?id=<?php echo $id ?>";
+			}
+		}
+		function confirmarOcultar() {
+			var confirmacion=confirm("¿Seguro que queres ocultar esta residencia?");
+			if (confirmacion) {
+				window.location = "ocultar-residencia.php?id=<?php echo $id ?>";
 			}
 		}
 	</script>
@@ -162,6 +168,8 @@
 					if ($subOfertable) echo '<p><a href="cerrar-subasta.php?id='.$id.'&semana='.$semana.'" style="color: green">Cerrar subasta.</a></p>';
 					else echo '<p><a href="crear-subasta.php?id='.$id.'" style="color: green">Crear subasta.</a></p>';
 					echo '<p><a href="modificar-residencia.php?id='.$id.'" style="color: green">Modificar residencia.</a></p>';
+					if ($datos_residencia['oculto'] == 1) echo '<p><a href="mostrar-residencia.php?id='.$id.'" style="color: green">Mostrar residencia.</a></p>';
+					else echo '<p><a onclick="confirmarOcultar()" href="#" style="color: red">Ocultar residencia.</a></p>';
 					echo '<p><a onclick="confirmarEliminar()" href="#" style="color: red">Eliminar residencia.</a></p>';
 				}
 				?>
