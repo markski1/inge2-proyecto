@@ -1,4 +1,8 @@
-<?php include('componentes/funciones-usuarios.php');
+<?php 
+include('componentes/funciones-usuarios.php');
+$sesion = new sesion;
+$logeado = $sesion->logeado();
+
 if (isset($_GET['error'])) {
 	switch ($_GET['error']) {
 		case 1:
@@ -12,6 +16,9 @@ if (isset($_GET['error'])) {
 			break;
 		case 4:
 			echo "<div class='error'><p>Error desconocido.</p></div>";
+			break;
+		case 5:
+			echo "<div class='error'><p>E-Mail o clave incorrectos.</p></div>";
 			break;
 	}
 }

@@ -72,7 +72,7 @@
 						<td style="width: 200px;">
 							<span>Contraseña:</span></td>
 						<td>
-							<input maxlenght="16" name="clv" class="campo-formulario" placeholder="Minimo 6 caracteres." id="clv">
+							<input maxlenght="16" name="clv" type="password" class="campo-formulario" placeholder="Minimo 6 caracteres." id="clv">
 						</td>
 					</tr>
 				</table>
@@ -124,7 +124,7 @@
 					</tr>
 				</table>
 				<p>&nbsp;</p>
-				<input class="boton" type="submit" value="Agregar residencia.">
+				<input class="boton" type="submit" value="Crear nueva cuenta">
 			</form>
 		</div>
 		<div style="clear: both;"></div>

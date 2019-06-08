@@ -36,7 +36,7 @@ function validarRegistro() {
 	var cc_venc_mes = document.getElementById("cc_venc_mes");
 	var cc_venc_anno = document.getElementById("cc_venc_anno");
 
-	if(nombre.value.trim()=="" || apellido.value.trim()=="" || email.value.trim()=="" || nac_dia.value.trim()=="" || nac_mes.value.trim()=="" || nac_anno.value.trim()=="" || clave.value.trim()=="" || cc_marca.value.trim()=="" || cc_seg.value.trim()=="" || cc_titular.value.trim()=="" || cc_num.value.trim()=="" || cc_venc_dia.value.trim()=="" || cc_venc_mes.value.trim()=="" || cc_venc_anno.value.trim()==""){
+	if (nombre.value.trim()=="" || apellido.value.trim()=="" || email.value.trim()=="" || nac_dia.value.trim()=="" || nac_mes.value.trim()=="" || nac_anno.value.trim()=="" || clave.value.trim()=="" || cc_marca.value.trim()=="" || cc_seg.value.trim()=="" || cc_titular.value.trim()=="" || cc_num.value.trim()=="" || cc_venc_dia.value.trim()=="" || cc_venc_mes.value.trim()=="" || cc_venc_anno.value.trim()==""){
 		alert('Uno o mas campos estan vacios.');
 		return false;
 	}
@@ -46,6 +46,18 @@ function validarRegistro() {
 		return false;
 	}
 	return true;
+
+}
+
+function validarLogin() {
+
+	var email = document.getElementById("nick");
+	var clv = document.getElementById("pass");
+
+	if (email.value.trim()=="" || clv.value.trim()=="") {
+		alert('Tenes que insertar tu e-mail y clave.');
+		return false;
+	}
 
 }
 
