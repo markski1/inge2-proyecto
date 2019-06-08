@@ -26,6 +26,9 @@ if (isset($_GET['exito'])) {
 		case 3:
 			echo "<div class='exito'><p>Residencia re-publicada con éxito.</p></div>";
 			break;
+		case 4:
+			echo "<div class='exito'><p>Usuario registrado con éxito. Utilice la forma para logearse.</p></div>";
+			break;
 
 	}
 }

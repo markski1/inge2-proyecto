@@ -134,6 +134,16 @@ hr {
 	background-color: #00A1E1;
 }
 
+.reg-error {
+	margin-left: auto;
+	margin-right: auto;
+	padding: 50px;
+	background-color: white;
+	text-align: center;
+	width: 500px;
+	margin-top: 100px;
+}
+
 
 /* Tipos de texto */
 

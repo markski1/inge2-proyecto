@@ -24,7 +24,6 @@
 			$lunesSemana = strtotime("last monday", $fechaActual);
 			$finSubasta = strtotime("+3 day", $lunesSemana);
 		}
-		SHA2
 
 		$finSubastaDB = date("Y", $finSubasta)."-".date("m", $finSubasta)."-".date("d", $finSubasta);
 
