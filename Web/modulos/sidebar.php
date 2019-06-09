@@ -6,8 +6,11 @@ if ($logeado) {
 ?>
 <p>Bienvenido, <?=$_SESSION['nombre']?></p>
 <p>
-	Mi perfil</br>
-	Cerrar sesión</br>
+	<?php if ($sesion->esAdmin()) {?>
+	<a href="agregar.php">Agregar residencia</a></br>
+	<?php } ?>
+	<a href="perfil.php">Mi perfil</a></br>
+	<a href="modulos/cerrar-sesion.php">Cerrar sesión</a></br>
 </p>
 <?php
 } else {

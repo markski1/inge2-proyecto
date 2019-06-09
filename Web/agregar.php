@@ -1,10 +1,14 @@
 <?php 
-	include('componentes/funciones-usuarios.php') ;
+	include('componentes/funciones-usuarios.php');
 	include('componentes/sql.php');
 	$con = conectar();
-	$error = 0;
+	$sesion = new sesion;
+	$logeado = $sesion->estaLogeado();
 	include('componentes/funciones-residencia.php');
 	include('componentes/solo-admin.php');
+	
+	$error = 0;
+
 	if (isset($_GET['error'])) {
 		switch ($_GET['error']) {
 			case 1:

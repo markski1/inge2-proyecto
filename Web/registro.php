@@ -1,7 +1,13 @@
 <?php 
-	include('componentes/funciones-usuarios.php') ;
+	include('componentes/funciones-usuarios.php');
 	include('componentes/sql.php');
 	$con = conectar();
+	$sesion = new sesion;
+	$logeado = $sesion->estaLogeado();
+	if ($logeado) {
+		header('Location: perfil.php');
+		exit;
+	}
 	$error = 0;
 
 	if (isset($_GET['error'])) {

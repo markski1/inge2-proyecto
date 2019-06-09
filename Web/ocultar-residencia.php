@@ -2,9 +2,11 @@
 	if (!isset($_GET['id']) || empty($_GET['id'])) {
 		header('Location: index.php');
 	}
+	include('componentes/funciones-usuarios.php');
 	include('componentes/sql.php');
 	$con = conectar();
-	include('componentes/funciones-usuarios.php');
+	$sesion = new sesion;
+	$logeado = $sesion->estaLogeado();
 	include('componentes/solo-admin.php');
 	$id = mysqli_escape_string($con, $_GET['id']);
 	$query = "UPDATE `residencias` SET oculto=1 WHERE id=".$id;

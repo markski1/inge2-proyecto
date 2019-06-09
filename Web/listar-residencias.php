@@ -1,14 +1,10 @@
 <?php 
 	include('componentes/funciones-usuarios.php');
-	if (isset($_GET['error'])) {
-		switch ($_GET['error']) {
-			case 1:
-				echo "<div class='error'><p>ERROR: Intentaste acceder a un sitio restringido.</p></div>";
-				break;
-		}
-	}
 	include('componentes/sql.php');
 	$con = conectar();
+	$sesion = new sesion;
+	$logeado = $sesion->estaLogeado();
+
 	$residencias = mysqli_query($con, "SELECT * FROM residencias ORDER BY id");
 
 ?>

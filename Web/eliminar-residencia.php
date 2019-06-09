@@ -2,9 +2,11 @@
 	if (!isset($_GET['id']) || empty($_GET['id'])) {
 		header('Location: index.php');
 	}
+	include('componentes/funciones-usuarios.php');
 	include('componentes/sql.php');
 	$con = conectar();
-	include('componentes/funciones-usuarios.php');
+	$sesion = new sesion;
+	$logeado = $sesion->estaLogeado();
 	include('componentes/solo-admin.php');
 	$id = mysqli_escape_string($con, $_GET['id']);
 	$sql = mysqli_query($con, "SELECT * FROM semanas WHERE residencia=".$id." AND reservado=1");

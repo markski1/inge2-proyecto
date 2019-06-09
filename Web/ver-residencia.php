@@ -2,6 +2,8 @@
 	include('componentes/funciones-usuarios.php');
 	include('componentes/sql.php');
 	$con = conectar();
+	$sesion = new sesion;
+	$logeado = $sesion->estaLogeado();
 	include('componentes/funciones-residencia.php');
 
 	$id = mysqli_real_escape_string($con, $_GET['id']);
@@ -121,7 +123,7 @@
 
 						case 3:
 							echo '<p>Esta semana ya esta reservada.</p>';
-							if (esAdmin()) {
+							if ($sesion->esAdmin()) {
 								echo ObtenerInfoReserva($con, $id, $semana);
 							}
 							break;
@@ -163,7 +165,7 @@
 				</form>
 				<?php 
 					}
-				if (esAdmin()) {
+				if ($sesion->esAdmin()) {
 					echo '<p id="subtitulo">Controles administrativos.</p>';
 					if ($subOfertable) echo '<p><a href="cerrar-subasta.php?id='.$id.'&semana='.$semana.'" style="color: green">Cerrar subasta.</a></p>';
 					else echo '<p><a href="crear-subasta.php?id='.$id.'" style="color: green">Crear subasta.</a></p>';

@@ -1,8 +1,10 @@
 <?php 
 	include('componentes/funciones-usuarios.php');
-	include('componentes/solo-admin.php');
 	include('componentes/sql.php');
 	$con = conectar();
+	$sesion = new sesion;
+	$logeado = $sesion->estaLogeado();
+	include('componentes/solo-admin.php');
 	include('componentes/funciones-residencia.php');
 
 	$id = mysqli_real_escape_string($con, $_GET['id']);

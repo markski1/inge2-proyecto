@@ -1,7 +1,9 @@
 <?php 
-	include('componentes/funciones-usuarios.php') ;
+	include('componentes/funciones-usuarios.php');
 	include('componentes/sql.php');
 	$con = conectar();
+	$sesion = new sesion;
+	$logeado = $sesion->estaLogeado();
 	$error = 0;
 	include('componentes/funciones-residencia.php');
 	include('componentes/solo-admin.php');

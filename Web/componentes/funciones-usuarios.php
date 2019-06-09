@@ -37,6 +37,25 @@ class sesion{
 			return false;
 		}
 	}
+	function obtenerDatosUsuario() {
+		$con = conectar();
+		$sql = mysqli_query($con, "SELECT * FROM usuarios WHERE id=".$_SESSION['id']);
+		$retorno = mysqli_fetch_array($sql);
+		return $retorno;
+	}
+	function esAdmin() {
+		if(!isset($_SESSION['id'])) {
+			return false;
+		}
+		$con = conectar();
+		$sql = mysqli_query($con, "SELECT rango FROM usuarios WHERE id=".$_SESSION['id']);
+		$resultado = mysqli_fetch_array($sql);
+		if ($resultado['rango'] == 2) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
 
 
@@ -51,12 +70,4 @@ function ChequearExisteUsuario($con, $email) {
 	}
 	return true;
 }
-
-function esAdmin() {
-	if (!isset($_COOKIE['admin'])) {
-		return false;
-	}
-	return true;
-}
-
 ?>
