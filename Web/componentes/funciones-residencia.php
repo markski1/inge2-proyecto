@@ -14,7 +14,7 @@ function CrearSemanas($con, $id) {
 		// Se agregan 7 dias a la fecha
 		$fecha = strtotime("+7 day", $fecha);
 		// Se le da formato YYYY/MM/DD que es la manera que tiene MySQL de guardar fechas
-		$fechaDb = date("Y" ,$fecha)."-".date("m" ,$fecha)."-".date("d" ,$fecha);
+		$fechaDb = date("Y", $fecha)."-".date("m", $fecha)."-".date("d", $fecha);
 		// Se agrega a la base de datos
 		$agregar = mysqli_query($con, "INSERT INTO semanas (residencia, fecha) VALUES ('".$id."', '".$fechaDb."')");
 	}
@@ -68,8 +68,8 @@ function ListarSemanas($con, $id, $semana = -1, &$estado) {
 		// Devolver estado de semana seleccionada.
 		if ($semana == $listarsemanas['id']) {
 			if ($listarsemanas['subasta'] > 0) $estado = 1; // En subasta
-			if ($fecha > $fechaLimite) $estado = 2; // Solo premium
-			if ($listarsemanas['reservado'] == 1) $estado = 3; // reservado
+			else if ($listarsemanas['reservado'] == 1) $estado = 3; // reservado
+			else if ($fecha > $fechaLimite) $estado = 2; // Solo premium
 		}
 	}
 	return $subCont;
@@ -85,7 +85,7 @@ function ObtenerSemanaSubastable($con, $residencia) {
 	$fechaActual = time();
 	$fechaSubasta = strtotime("+6 month", $fechaActual);
 	$fechaSubasta = strtotime("-3 day", $fechaSubasta);
-	$fechaDb = date("Y" ,$fechaSubasta)."-".date("m" ,$fechaSubasta)."-".date("d" ,$fechaSubasta);
+	$fechaDb = date("Y", $fechaSubasta)."-".date("m", $fechaSubasta)."-".date("d", $fechaSubasta);
 	$sql = mysqli_query($con, "SELECT * FROM semanas WHERE residencia=".$residencia." AND fecha >= '".$fechaDb."' LIMIT 1");
 
 	$semanaSubasta = mysqli_fetch_array($sql);
@@ -168,4 +168,70 @@ function ChequearSemanaReservada($con, $semana) {
 		}
 	}
 	return "Error al conectar a la base de datos.";
+}
+
+///////////////////////
+// Si el segundo parametro es false, retorna un string el cual marca el fin de la subasta de una semana dada.
+// Si el segundo parametro es true, retorna un true/false dependiendo de si ya termino o no la subasta.
+// Si se pide un string pero la subasta termino, entonces se finaliza la subasta y se envia false.
+///////////////////////
+function ObtenerFinSubasta($con, $semana, $devolverBool) {
+	$sql = mysqli_query($con, "SELECT sub_finaliza FROM semanas WHERE id=".$semana);
+	if (!$sql) {
+		return false;
+	}
+	$arregloSql = mysqli_fetch_array($sql);
+	$fechaFin = strtotime($arregloSql['sub_finaliza']);
+	$fechaActual = time();
+	if ($devolverBool){
+		if ($fechaActual > $fechaFin) {
+			CerrarSubasta($con, $semana);
+			return true;
+		} else {
+			return false;
+		}
+	} else {
+		if ($fechaActual > $fechaFin) {
+			CerrarSubasta($con, $semana);
+			return false;
+		} else {
+			$textoDevolver = date('d', $fechaFin)." de ".strftime("%B", $fechaFin);
+			return $textoDevolver;
+		}
+	}
+}
+
+///////////////////////
+// Esta funcion cierra una subasta.
+// Retorna un mensaje con información de lo sucedido.
+///////////////////////
+function CerrarSubasta($con, $semana) {
+	// Primero nos aseguramos que dicha semana tenga una subasta en curso, caso contrario retornamos false.
+	$sql = mysqli_query($con, "SELECT subasta FROM semanas WHERE id=".$semana);
+	$datoSemana = mysqli_fetch_array($sql);
+	if ($datoSemana['subasta'] != 1) {
+		return false;
+	}
+	// Los ordenamos de mayor a menor oferta, de esta manera ya tenemos en el tope del vector respuesta a la oferta ganadora.
+	$sql = mysqli_query($con, "SELECT * FROM subastas WHERE semana=".$semana." AND semana=".$semana." ORDER BY oferta DESC");
+	if ($sql) {
+		if (mysqli_num_rows($sql) > 0) {
+			$cantidadOfertas = mysqli_num_rows($sql);
+			$ofertaGanadora = mysqli_fetch_array($sql);
+			$ganador = $ofertaGanadora['email'];
+			$ganadorPaga = $ofertaGanadora['oferta'];
+			$sql = mysqli_query($con, "UPDATE semanas SET sub_precio_base=0, subasta=0, reservado=1, reservado_por='".$ganador."', reservado_precio='".$ganadorPaga."' WHERE id=".$semana);
+			if ($sql) {
+				$mensaje = "La subasta se cerro. El ganador fue ".$ganador." con una oferta de $".$ganadorPaga.".";
+			} else {
+				$mensaje = "La subasta existe y tambien existen ofertas, pero no se pudo cerrar por un error de SQL.";
+			}
+		} else {
+			$sql = mysqli_query($con, "UPDATE semanas SET subasta=0 WHERE id=".$semana);
+			$mensaje = "Se cerro la subasta sin ganadores porque nadie oferto.";
+		}
+	} else {
+		$mensaje = "Hubo un error, la base de datos no tomo la consulta.";
+	}
+	return $mensaje;
 }

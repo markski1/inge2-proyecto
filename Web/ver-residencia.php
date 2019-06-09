@@ -2,6 +2,8 @@
 	include('componentes/funciones-usuarios.php');
 	include('componentes/sql.php');
 	$con = conectar();
+	$sesion = new sesion;
+	$logeado = $sesion->estaLogeado();
 	include('componentes/funciones-residencia.php');
 
 	$id = mysqli_real_escape_string($con, $_GET['id']);
@@ -63,9 +65,15 @@
 			window.location = redireccion;
 		}
 		function confirmarEliminar() {
-			var confirmacion=confirm("Seguro que queres eliminar esta residencia?");
+			var confirmacion=confirm("¿Seguro que queres eliminar esta residencia?");
 			if (confirmacion) {
 				window.location = "eliminar-residencia.php?id=<?php echo $id ?>";
+			}
+		}
+		function confirmarOcultar() {
+			var confirmacion=confirm("¿Seguro que queres ocultar esta residencia?");
+			if (confirmacion) {
+				window.location = "ocultar-residencia.php?id=<?php echo $id ?>";
 			}
 		}
 	</script>
@@ -94,7 +102,6 @@
 							echo '</p>';
 						}
 					?>
-					<p><span class="color-hsh"><b>Precio por semana:</b></span> $<?php echo $datos_residencia['precio']?></p>
 				</div>
 				<div style="clear: both;"></div>
 				<p><span class="color-hsh"><b>Descripción:</b></span> <?php echo utf8_decode($datos_residencia['descripcion'])?></p>
@@ -116,7 +123,7 @@
 
 						case 3:
 							echo '<p>Esta semana ya esta reservada.</p>';
-							if (esAdmin()) {
+							if ($sesion->esAdmin()) {
 								echo ObtenerInfoReserva($con, $id, $semana);
 							}
 							break;
@@ -142,7 +149,11 @@
 						}
 				?>
 				<p id="subtitulo">Ofertar en subasta.</p>
+				<?php 
+					$finSubasta = ObtenerFinSubasta($con, $semana, false);
+				?>
 				<p>El precio base es de $<?php echo $listarDatosSubasta['sub_precio_base'] ?></p>
+				<p>La subasta finaliza el <?php echo $finSubasta ?></p>
 				<?php 
 					if ($ofertaMasAlta == 0) echo '<p>Nadie ha ofertado aun por esta propiedad.</p>';
 					else echo '<p>La oferta mas alta es de '.$ofertaMasAlta.' por '.$email.'</p>';
@@ -154,11 +165,13 @@
 				</form>
 				<?php 
 					}
-				if (esAdmin()) {
+				if ($sesion->esAdmin()) {
 					echo '<p id="subtitulo">Controles administrativos.</p>';
 					if ($subOfertable) echo '<p><a href="cerrar-subasta.php?id='.$id.'&semana='.$semana.'" style="color: green">Cerrar subasta.</a></p>';
 					else echo '<p><a href="crear-subasta.php?id='.$id.'" style="color: green">Crear subasta.</a></p>';
 					echo '<p><a href="modificar-residencia.php?id='.$id.'" style="color: green">Modificar residencia.</a></p>';
+					if ($datos_residencia['oculto'] == 1) echo '<p><a href="mostrar-residencia.php?id='.$id.'" style="color: green">Mostrar residencia.</a></p>';
+					else echo '<p><a onclick="confirmarOcultar()" href="#" style="color: red">Ocultar residencia.</a></p>';
 					echo '<p><a onclick="confirmarEliminar()" href="#" style="color: red">Eliminar residencia.</a></p>';
 				}
 				?>

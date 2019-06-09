@@ -1,26 +1,46 @@
-<?php include('componentes/funciones-usuarios.php');
-if (isset($_GET['error'])) {
-	switch ($_GET['error']) {
-		case 1:
-			echo "<div class='error'><p>Intentaste acceder a un sitio restringido.</p></div>";
-			break;
-		case 2:
-			echo "<div class='error'><p>Error al eliminar residencia.</p></div>";
-			break;
-		case 3:
-			echo "<div class='error'><p>No se puede eliminar esta residencia porque tiene una o mas semanas reservadas.</p></div>";
-			break;
-	}
-}
-if (isset($_GET['exito'])) {
-	switch($_GET['exito']) {
-		case 1:
-			echo "<div class='exito'><p>Residencia eliminada con éxito.</p></div>";
-			break;
+<?php 
+	include('componentes/funciones-usuarios.php');
+	include('componentes/sql.php');
+	$con = conectar();
+	$sesion = new sesion;
+	$logeado = $sesion->estaLogeado();
 
+	if (isset($_GET['error'])) {
+		switch ($_GET['error']) {
+			case 1:
+				echo "<div class='error'><p>Intentaste acceder a un sitio restringido.</p></div>";
+				break;
+			case 2:
+				echo "<div class='error'><p>Error al eliminar residencia.</p></div>";
+				break;
+			case 3:
+				echo "<div class='error'><p>No se puede eliminar esta residencia porque tiene una o mas semanas reservadas.</p></div>";
+				break;
+			case 4:
+				echo "<div class='error'><p>Error desconocido.</p></div>";
+				break;
+			case 5:
+				echo "<div class='error'><p>E-Mail o clave incorrectos.</p></div>";
+				break;
+		}
 	}
-}
+	if (isset($_GET['exito'])) {
+		switch($_GET['exito']) {
+			case 1:
+				echo "<div class='exito'><p>Residencia eliminada con éxito.</p></div>";
+				break;
+			case 2:
+				echo "<div class='exito'><p>Residencia oculta con éxito.</p></div>";
+				break;
+			case 3:
+				echo "<div class='exito'><p>Residencia re-publicada con éxito.</p></div>";
+				break;
+			case 4:
+				echo "<div class='exito'><p>Usuario registrado con éxito. Utilice la forma para logearse.</p></div>";
+				break;
 
+		}
+	}
 ?>
 <!DOCTYPE html>
 <html>

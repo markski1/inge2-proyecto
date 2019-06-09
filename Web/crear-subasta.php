@@ -1,8 +1,10 @@
 <?php 
 	include('componentes/funciones-usuarios.php');
-	include('componentes/solo-admin.php');
 	include('componentes/sql.php');
 	$con = conectar();
+	$sesion = new sesion;
+	$logeado = $sesion->estaLogeado();
+	include('componentes/solo-admin.php');
 	include('componentes/funciones-residencia.php');
 
 	$id = mysqli_real_escape_string($con, $_GET['id']);
@@ -17,8 +19,17 @@
 
 		$precio = htmlspecialchars(mysqli_real_escape_string($con, $_POST['precio']));
 		$semanaId = htmlspecialchars(mysqli_real_escape_string($con, $_POST['semana']));
+		$fechaActual = time();
+		if (date('w', $fechaActual) == 1) {
+			$finSubasta = strtotime("+3 day", $fechaActual);
+		} else {
+			$lunesSemana = strtotime("last monday", $fechaActual);
+			$finSubasta = strtotime("+3 day", $lunesSemana);
+		}
 
-		$sql = mysqli_query($con, "UPDATE `semanas` SET `subasta`='1', `sub_precio_base`='".$precio."' WHERE `id`='".$semanaId."'");
+		$finSubastaDB = date("Y", $finSubasta)."-".date("m", $finSubasta)."-".date("d", $finSubasta);
+
+		$sql = mysqli_query($con, "UPDATE `semanas` SET `subasta`='1', `sub_precio_base`='".$precio."', `sub_finaliza`='".$finSubastaDB."'  WHERE `id`='".$semanaId."'");
 		if ($sql) echo '<div class="exito"><p>Subasta creada con exito.</p></div>';
 		else echo '<div class="error"><p>Error al crear subasta.</p></div>';
 	}

@@ -1,8 +1,10 @@
 <?php 
 	include('componentes/funciones-usuarios.php');
-	include('componentes/solo-admin.php');
 	include('componentes/sql.php');
 	$con = conectar();
+	$sesion = new sesion;
+	$logeado = $sesion->estaLogeado();
+	include('componentes/solo-admin.php');
 	include('componentes/funciones-residencia.php');
 
 	$id = mysqli_real_escape_string($con, $_GET['id']);
@@ -20,28 +22,7 @@
 	}
 
 	if ($semana >= 0) {
-		// Los ordenamos de mayor a menor oferta, de esta manera ya tenemos en el tope del vector respuesta a la oferta ganadora.
-		$sql = mysqli_query($con, "SELECT * FROM subastas WHERE residencia=".$id." AND semana=".$semana." ORDER BY oferta DESC");
-		if ($sql) {
-			if (mysqli_num_rows($sql) > 0) {
-				$cantidadOfertas = mysqli_num_rows($sql);
-				$ofertaGanadora = mysqli_fetch_array($sql);
-				$ganador = $ofertaGanadora['email'];
-				$ganadorPaga = $ofertaGanadora['oferta'];
-				$sql = mysqli_query($con, "UPDATE semanas SET sub_precio_base=0, subasta=0, reservado=1, reservado_por='".$ganador."', reservado_precio='".$ganadorPaga."' WHERE id=".$semana);
-				if ($sql) {
-					$mensaje = "La subasta se cerro. El ganador fue ".$ganador." con una oferta de $".$ganadorPaga.".";
-				} else {
-					$mensaje = "La subasta existe y tambien existen ofertas, pero no se pudo cerrar por un error de SQL.";
-				}
-			} else {
-				// Solo una semana puede estar en subasta a la vez, asi que cerramos todo bajo el ID de residencia y ya esta.
-				$sql = mysqli_query($con, "UPDATE semanas SET subasta=0 WHERE residencia=".$id);
-				$mensaje = "Se cerro la subasta sin ganadores porque nadie oferto.";
-			}
-		} else {
-			$mensaje = "Hubo un error, la base de datos no tomo la consulta.";
-		}
+		$mensaje = CerrarSubasta($con, $semana);
 	} else {
 		$mensaje = "Hubo un error, el link esta mal. Intenta de nuevo.";
 	}
