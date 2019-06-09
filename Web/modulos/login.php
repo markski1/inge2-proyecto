@@ -12,9 +12,9 @@ $usuario = new sesion;
 $accionLogeo = $usuario->iniciarSesion($nombre, $clave);
 
 if($exito){
-	header('Location: index.php');
+	header('Location: ../index.php');
 }else{
-	header('Location: index.php?error=5');
+	header('Location: ../index.php?error=5');
 }
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 
 class sesion{
-	function iniciarSesion($usuario, $clave){
+	function iniciarSesion($usuario, $clave) {
 		// se crea una nueva conexion sql porque es necesario en esta funcion, el require no la pasa por alguna razón
 		$coneccion = conectar();
 		// $usuario y $clave se buscan en la SQL, si hay resultados, se hace el login, si no, retorna false
@@ -9,17 +9,18 @@ class sesion{
 		if($datosuser = mysqli_fetch_array($sql)){
 			session_start();
 			$_SESSION['id'] = $datosuser['id'];
-			$_SESSION['usuario'] = $datosuser['nombreusuario'];
+			$_SESSION['nombre'] = $datosuser['nombre'];
+			$_SESSION['email'] = $datosuser['email'];;
 			return true;
 		}else{
 			return false;
 			exit;
 		}
 	}
-	function cerrarSesion(){
+	function cerrarSesion() {
 		session_start();
 		// si la sesion esta seteada se realiza, si no, se avisa.
-	    if(isset($_SESSION['usuario'])) {
+	    if(isset($_SESSION['id'])) {
 	        session_destroy();
 	        session_unset();
 	        header("Location: index.php");
@@ -27,10 +28,10 @@ class sesion{
 	        echo "Para cerrar sesion estaria bueno que la inicies.";
 	    }
 	}
-	function estaLogeado(){
+	function estaLogeado() {
 		session_start();
 		// si la sesion esta seteada retorna true, si no, false.
-		if(isset($_SESSION['usuario'])){
+		if(isset($_SESSION['id'])){
 			return true;
 		}else{
 			return false;
