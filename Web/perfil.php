@@ -36,7 +36,8 @@
 				<p id="subtitulo">Información de tu tarjeta de credito</p>
 				<p><span class="color-hsh"><b>Marca:</b></span> <?php echo utf8_decode($datosUsuario['cc_marca'])?></p>
 				<p><span class="color-hsh"><b>Numero:</b></span> <?php echo utf8_decode($datosUsuario['cc_numero'])?></p>
-				<p><span class="color-hsh"><b>Vencimiento:</b></span> <?php $fechaCompleta = utf8_decode($datosUsuario['cc_vencimiento']); $mostrar = str_replace('00:00:00', '', $fechaCompleta); echo $mostrar;?></p>
+				<p><span class="color-hsh"><b>Vencimiento:</b></span> <?php $fechaCompleta = utf8_decode($datosUsuario['cc_vencimiento']); $mostrar = str_replace('-28 00:00:00', '', $fechaCompleta); echo $mostrar;?></p>
+				<p><a href="editar-perfil.php">Editar perfil</a></p>
 			</div>
 		</div>
 		<div style="clear: both;"></div>

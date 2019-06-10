@@ -22,7 +22,7 @@
 <html>
 <head>
 
-	<title>Home Switch Home - Agregando residencia</title>
+	<title>Home Switch Home - Registro usuario</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="estilo.css">
 	<?php include('js/todo.php') ?>
@@ -99,7 +99,7 @@
 							<span>Numero:</span>
 						</td>
 						<td>
-							<input type="number" maxlenght="16" name="cc_num" class="campo-formulario" id="cc_num">
+							<input type="number" maxlenght="16" placeholder="16 caracteres" name="cc_num" class="campo-formulario" id="cc_num">
 						</td>
 					</tr>
 					<tr>
@@ -107,7 +107,7 @@
 							<span>Código de seguridad:</span>
 						</td>
 						<td>
-							<input type="number" maxlenght="16" name="cc_seg" class="campo-formulario" id="cc_seg">
+							<input type="number" maxlenght="16" placeholder="3 caracteres" name="cc_seg" class="campo-formulario" id="cc_seg">
 						</td>
 					</tr>
 					<tr>
@@ -123,9 +123,8 @@
 							<span>Fecha de vencimiento:</span>
 						</td>
 						<td>
-							<input maxlenght="2" placeholder="Dia" style="width: 80px;" name="cc_venc_dia" type="number" class="campo-formulario" id="cc_venc_dia">
-							<input maxlenght="2" placeholder="Mes" style="width: 80px;" name="cc_venc_mes" type="number" class="campo-formulario" id="cc_venc_mes">
-							<input maxlenght="4" placeholder="Año" style="width: 150px;" name="cc_venc_anno" type="number" class="campo-formulario" id="cc_venc_anno">
+							<input maxlenght="2" placeholder="Mes" style="width: 110px;" name="cc_venc_mes" type="number" class="campo-formulario" id="cc_venc_mes">
+							<input maxlenght="4" placeholder="Año" style="width: 245px;" name="cc_venc_anno" type="number" class="campo-formulario" id="cc_venc_anno">
 						</td>
 					</tr>
 				</table>
