@@ -58,11 +58,10 @@ if ($cc_venc_mes > 12) {
 $nacimientofecha = $nac_anno."-".$nac_mes."-".$nac_dia;
 $vencimientofecha = $cc_venc_anno."-".$cc_venc_mes."-28";
 
-if (strtotime($vencimientofecha) > time()) {
-	if ($cc_venc_mes > 12) {
+if (strtotime($vencimientofecha) < time()) {
 	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: Esa tarjeta de credito ha vencido.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
 		die();
-} 
+	}
 }
 
 if (!ChequearExisteUsuario($con, $email)) {
