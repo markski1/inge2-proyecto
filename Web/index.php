@@ -5,6 +5,8 @@
 	$sesion = new sesion;
 	$logeado = $sesion->estaLogeado();
 
+	if ($logeado) $datosUsuario = $sesion->obtenerDatosUsuario();
+
 	if (isset($_GET['error'])) {
 		switch ($_GET['error']) {
 			case 1:
@@ -59,12 +61,26 @@
 			<?php include('modulos/sidebar.php') ?>
 		</div>
 		<div class="pagina">
-			<span id="subtitulo">Bienvenido.</span>
-			<p><a href="listar-residencias.php">Listar todas nuestras residencias.</a></p>
+			<?php 
+			if (!$logeado) {
+				echo '<span id="subtitulo">Bienvenido, invitado.</span>';
+				echo '<p>Home Switch Home es un servicio de tiempos compartidos en el cual podes competir con otros usuarios por residencias, al igual que tambien beneficiarte de ofertas especiales. Es necesario que seas miembro del sitio para participar.';
+				echo '<p>Si deseas ser miembro, o si ya lo sos, podes acceder al sitio desde la barra lateral izquierda.';
+				echo '<p>Si no sos miembro, solo podras ver las residencias.</p>';
+			} else {
+				echo '<span id="subtitulo">Bienvenido, '.$_SESSION['nombre'].'.</span>';
+				echo '<p>Usuario '.ImprimirTipoUsuario($datosUsuario).'.</p>';
+			}
+			?>
+			
+			<p><a href="listar-residencias.php">Listar nuestras residencias.</a></p>
 			<!-- <p><a href="listar-residencias.php?tipo=subasta">Listar nuestras residencias en subasta.</a></p> -->
 			
 		</div>
 		<div style="clear: both;"></div>
+	</div>
+	<div class="footer">
+		<?php include('modulos/footer.php') ?>
 	</div>
 </body>
 </html>

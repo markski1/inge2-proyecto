@@ -80,7 +80,7 @@
 					echo '<div class="error"><p>La clave debe tener al menos 6 caracteres.</p></div>';
 					$continuar = false;
 				}
-				$clavequery = ", `clave`='".$clv."'";
+				$clavequery = ", `clave`='".md5($clv)."'";
 			} else {
 				$clavequery = '';
 			}
@@ -213,6 +213,9 @@
 			</form>
 		</div>
 		<div style="clear: both;"></div>
+	</div>
+	<div class="footer">
+		<?php include('modulos/footer.php') ?>
 	</div>
 </body>
 </html>

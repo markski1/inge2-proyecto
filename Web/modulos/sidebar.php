@@ -4,12 +4,12 @@
 <?php
 if ($logeado) {
 ?>
-<p>Bienvenido, <?=$_SESSION['nombre']?></p>
+<p>Conectado como:</br><?=$_SESSION['email']?></p>
 <p>
 	<?php if ($sesion->esAdmin()) {?>
-	<a href="agregar.php">Agregar residencia</a></br>
+	<a href="admin.php">Panel administrativo.</a></br>
 	<?php } ?>
-	<a href="perfil.php">Mi perfil</a></br>
+	<a href="perfil.php">Mi perfil</a></br>&nbsp;</br>
 	<a href="modulos/cerrar-sesion.php">Cerrar sesión</a></br>
 </p>
 <?php

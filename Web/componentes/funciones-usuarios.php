@@ -64,10 +64,26 @@ class sesion{
 // Retorna true o false dependiendo de si un e-mail ya esta registrado
 ////////////////////////
 function ChequearExisteUsuario($con, $email) {
-	$sql = mysqli_query($con, "SELECT * FROM usuarios WHERE e-mail='".$email);
-	if (mysqli_num_rows($sql) == 0) {
-		return false;
+	$sql = mysqli_query($con, "SELECT * FROM usuarios WHERE email='".$email."'");
+	if (mysqli_num_rows($sql) > 0) {
+		return true;
 	}
-	return true;
+	return false;
+}
+
+function ImprimirTipoUsuario($datosUsuario) {
+	switch ($datosUsuario['rango']) {
+		case 1:
+			return 'Premium';
+			break;
+
+		case 2:
+			return 'Administrador';
+			break;
+		
+		default:
+			return 'Normal';
+			break;
+	}
 }
 ?>

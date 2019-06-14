@@ -29,30 +29,29 @@ $cc_venc_anno = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_P
 
 if (strlen($clv) < 6) {
 	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: La clave es demaciado corta. Debe tener al menos 6 caracteres.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-		die();
+	die();
 }
 
 if (strlen($cc_seg) != 3) {
 	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: El codigo de seguridad debe tener 3 caracteres.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-		die();
+	die();
 }
 
 if (strlen($cc_num) != 16) {
 	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: El numero de la tarjeta de credito debe tener 16 caracteres.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-		die();
+	die();
 }
 
 $clv = md5($clv);
-echo $clv;
 
 if ($nac_dia > 31 || $nac_mes > 12) {
 	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: La fecha de nacimiento no es valida.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-		die();
+	die();
 } 
 
 if ($cc_venc_mes > 12) {
 	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: La fecha de vencimiento de la tarjeta de credito no es valida.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-		die();
+	die();
 } 
 
 $nacimientofecha = $nac_anno."-".$nac_mes."-".$nac_dia;
@@ -60,8 +59,7 @@ $vencimientofecha = $cc_venc_anno."-".$cc_venc_mes."-28";
 
 if (strtotime($vencimientofecha) < time()) {
 	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: Esa tarjeta de credito ha vencido.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-		die();
-	}
+	die();
 }
 
 if (!ChequearExisteUsuario($con, $email)) {
@@ -76,6 +74,6 @@ if (!ChequearExisteUsuario($con, $email)) {
 	}
 } else {
 	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Ya existe una cuenta con esa direccion de e-mail.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-		die();
+	die();
 }
 ?>

@@ -55,11 +55,22 @@ hr {
 	padding-bottom: 20px;
 }
 
+.footer {
+	width: 90%;
+	max-width: 1040px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 30px;
+	margin-top: 50px;
+	background: white;
+}
+
 .pagina {
 	float: right;
-	width: 68%;
+	width: 66%;
 	background-color: white;
 	padding-left: 20px;
+	padding-right: 20px;
 	padding-top: 20px;
 	padding-bottom: 20px;
 }
