@@ -6,7 +6,7 @@
 	include('componentes/sql.php');
 	$con = conectar();
 	$sesion = new sesion;
-	$logeado = $sesion->estaLogeado();
+	$logeado = $sesion->estaLogeado($con);
 	include('componentes/solo-admin.php');
 	$id = mysqli_escape_string($con, $_GET['id']);
 	$sql = mysqli_query($con, "SELECT * FROM semanas WHERE residencia=".$id." AND reservado=1");

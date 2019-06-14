@@ -6,7 +6,7 @@
 	include('componentes/sql.php');
 	$con = conectar();
 	$sesion = new sesion;
-	$logeado = $sesion->estaLogeado();
+	$logeado = $sesion->estaLogeado($con);
 	include('componentes/solo-admin.php');
 	$id = mysqli_escape_string($con, $_GET['id']);
 	$query = "UPDATE `residencias` SET oculto=1 WHERE id=".$id;

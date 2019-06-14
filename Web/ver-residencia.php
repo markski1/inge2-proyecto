@@ -3,7 +3,7 @@
 	include('componentes/sql.php');
 	$con = conectar();
 	$sesion = new sesion;
-	$logeado = $sesion->estaLogeado();
+	$logeado = $sesion->estaLogeado($con);
 	include('componentes/funciones-residencia.php');
 
 	$id = mysqli_real_escape_string($con, $_GET['id']);

@@ -3,7 +3,7 @@
 	include('componentes/sql.php');
 	$con = conectar();
 	$sesion = new sesion;
-	$logeado = $sesion->estaLogeado();
+	$logeado = $sesion->estaLogeado($con);
 
 	$residencias = mysqli_query($con, "SELECT * FROM residencias ORDER BY id");
 

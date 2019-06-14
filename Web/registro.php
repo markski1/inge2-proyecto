@@ -3,7 +3,7 @@
 	include('componentes/sql.php');
 	$con = conectar();
 	$sesion = new sesion;
-	$logeado = $sesion->estaLogeado();
+	$logeado = $sesion->estaLogeado($con);
 	if ($logeado) {
 		header('Location: perfil.php');
 		exit;

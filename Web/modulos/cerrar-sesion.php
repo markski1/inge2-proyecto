@@ -4,7 +4,7 @@ include "../componentes/funciones-usuarios.php";
 $con = conectar();
 $sesion = new sesion;
 
-$logeado = $sesion->estaLogeado();
+$logeado = $sesion->estaLogeado($con);
 
 if ($logeado) {
 	$sesion->cerrarSesion();

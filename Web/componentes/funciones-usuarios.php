@@ -10,7 +10,7 @@ class sesion{
 			session_start();
 			$_SESSION['id'] = $datosuser['id'];
 			$_SESSION['nombre'] = $datosuser['nombre'];
-			$_SESSION['email'] = $datosuser['email'];;
+			$_SESSION['email'] = $datosuser['email'];
 			return true;
 		}else{
 			return false;
@@ -24,16 +24,25 @@ class sesion{
 	        session_destroy();
 	        session_unset();
 	        header("Location: index.php");
-	    }else {
+	    } else {
 	        echo "Para cerrar sesion estaria bueno que la inicies.";
 	    }
 	}
-	function estaLogeado() {
+	function estaLogeado($con) {
 		session_start();
 		// si la sesion esta seteada retorna true, si no, false.
 		if(isset($_SESSION['id'])){
+			// Chequear los tokens del usuario, actualizarlos en caso de estar vencido
+			$sql = mysqli_query($con, "SELECT tokens_upd FROM usuarios WHERE id=".$_SESSION['id']);
+			$chequeo = mysqli_fetch_array($sql);
+			if (strtotime($chequeo['tokens_upd']) < time()) {
+				$tokens_upd_fecha = time();
+				$tokens_upd_fecha = strtotime("+1 year", $tokens_upd_fecha);
+				$tokens_upd_db = date("Y", $tokens_upd_fecha)."-".date("m", $tokens_upd_fecha)."-".date("d", $tokens_upd_fecha);
+				mysqli_query($con, "UPDATE usuarios SET `tokens`='2', `tokens_upd`='".$tokens_upd_db."'");
+			}
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}

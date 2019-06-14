@@ -62,8 +62,12 @@ if (strtotime($vencimientofecha) < time()) {
 	die();
 }
 
+$tokens_upd_fecha = time();
+$tokens_upd_fecha = strtotime("+1 year", $tokens_upd_fecha);
+$tokens_upd_db = date("Y", $tokens_upd_fecha)."-".date("m", $tokens_upd_fecha)."-".date("d", $tokens_upd_fecha);
+
 if (!ChequearExisteUsuario($con, $email)) {
-	$sql = mysqli_query($con, "INSERT INTO usuarios (nombre, apellido, email, nacimiento, clave, cc_titular, cc_marca, cc_segur, cc_numero, cc_vencimiento) VALUES ('".$nombre."', '".$apellido."', '".$email."','".$nacimientofecha."', '".$clv."', '".$cc_titular."', '".$cc_marca."', '".$cc_seg."', '".$cc_num."', '".$vencimientofecha."')");
+	$sql = mysqli_query($con, "INSERT INTO usuarios (nombre, apellido, email, nacimiento, clave, cc_titular, cc_marca, cc_segur, cc_numero, cc_vencimiento, tokens_upd) VALUES ('".$nombre."', '".$apellido."', '".$email."','".$nacimientofecha."', '".$clv."', '".$cc_titular."', '".$cc_marca."', '".$cc_seg."', '".$cc_num."', '".$vencimientofecha."', '".$tokens_upd_db."')");
 	if ($sql) {
 		header('Location: index.php?exito=4');
 		die();

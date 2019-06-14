@@ -6,6 +6,8 @@
 	$logeado = $sesion->estaLogeado($con);
 	include('componentes/funciones-residencia.php');
 	include('componentes/solo-admin.php');
+
+	$sql = mysqli_query($con, "SELECT * FROM usuarios");
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,22 +27,28 @@
 			<?php include('modulos/sidebar.php') ?>
 		</div>
 		<div class="pagina">
-			<span id="subtitulo">Panel administrativo.</span>
-			<h3>Residencias</h3>
-			<ul>
-				<li><a href="agregar.php">Agregar residencia</a></li>
-				<li><a href="listar-residencias-admin.php">Listar todas las residencias.</a></li>
-			</ul>
-				
-			<h3>Usuarios</h3>
-			<ul>
-				<li><a href="listar-usuarios-admin.php">Listar todos los usuarios</a></li>
-			</ul>
-
-			<h3>General</h3>
-			<ul>
-				<li><a href="precios.php">Precios de usuario y premium.</a></li>
-			</ul>
+			<span id="subtitulo">Todos los usuarios.</span></br>
+			<span>&nbsp;</span>
+			<table>
+				<tr>
+					<td width="150">Nombre</td>
+					<td width="100">Apellido</td>
+					<td width="200">E-Mail</td>
+					<td width="150">Rango</td>
+					<td width="100">--</td>
+				</tr>
+			<?php 
+				while ($listusuarios = mysqli_fetch_array($sql)) {
+					echo '<tr>';
+					echo '<td>'.$listusuarios['nombre'].'</td>';
+					echo '<td>'.$listusuarios['apellido'].'</td>';
+					echo '<td>'.$listusuarios['email'].'</td>';
+					echo '<td>'.ImprimirTipoUsuario($listusuarios).'</td>';
+					echo '<td><a href="perfil-admin.php?id='.$listusuarios['id'].'">Ver más</a></td>';
+					echo '</tr>';
+				}
+			?>
+			</table>
 		</div>
 		<div style="clear: both;"></div>
 	</div>
