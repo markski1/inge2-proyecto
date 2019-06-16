@@ -3,11 +3,15 @@ include('componentes/funciones-usuarios.php') ;
 include('componentes/sql.php');
 $con = conectar();
 
+function ImprimirError($error) {
+	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de reserva</h1></center><div class="reg-error"><p>Error: '.$error.'</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
+}
+
 $campos = array('nom', 'ape', 'email', 'nac_dia', 'nac_mes', 'nac_anno', 'clv', 'cc_titular', 'cc_marca', 'cc_seg', 'cc_num', 'cc_venc_mes', 'cc_venc_anno'); 
 foreach($campos AS $campo) {
 	if(!isset($_POST[$campo]) || empty($_POST[$campo])) {
-		echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: Uno de los campos no fue llenado.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-		die();
+		ImprimirError("Uno de los campos no fue llenado.");
+		exit;
 	}
 }
 
@@ -28,38 +32,38 @@ $cc_venc_mes = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_PO
 $cc_venc_anno = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['cc_venc_anno'])));
 
 if (strlen($clv) < 6) {
-	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: La clave es demaciado corta. Debe tener al menos 6 caracteres.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-	die();
+	ImprimirError("La clave es demaciado corta. Debe tener al menos 6 caracteres.");
+	exit;
 }
 
 if (strlen($cc_seg) != 3) {
-	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: El codigo de seguridad debe tener 3 caracteres.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-	die();
+	ImprimirError("El codigo de seguridad debe tener 3 caracteres.");
+	exit;
 }
 
 if (strlen($cc_num) != 16) {
-	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: El numero de la tarjeta de credito debe tener 16 caracteres.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-	die();
+	ImprimirError("El numero de la tarjeta de credito debe tener 16 caracteres.");
+	exit;
 }
 
 $clv = md5($clv);
 
 if ($nac_dia > 31 || $nac_mes > 12) {
-	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: La fecha de nacimiento no es valida.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-	die();
+	ImprimirError("La fecha de nacimiento no es valida.");
+	exit;
 } 
 
 if ($cc_venc_mes > 12) {
-	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: La fecha de vencimiento de la tarjeta de credito no es valida.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-	die();
+	ImprimirError("La fecha de vencimiento de la tarjeta de credito no es valida.");
+	exit;
 } 
 
 $nacimientofecha = $nac_anno."-".$nac_mes."-".$nac_dia;
 $vencimientofecha = $cc_venc_anno."-".$cc_venc_mes."-28";
 
 if (strtotime($vencimientofecha) < time()) {
-	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: Esa tarjeta de credito ha vencido.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-	die();
+	ImprimirError("Esa tarjeta de credito ha vencido.");
+	exit;
 }
 
 $tokens_upd_fecha = time();
@@ -70,14 +74,14 @@ if (!ChequearExisteUsuario($con, $email)) {
 	$sql = mysqli_query($con, "INSERT INTO usuarios (nombre, apellido, email, nacimiento, clave, cc_titular, cc_marca, cc_segur, cc_numero, cc_vencimiento, tokens_upd) VALUES ('".$nombre."', '".$apellido."', '".$email."','".$nacimientofecha."', '".$clv."', '".$cc_titular."', '".$cc_marca."', '".$cc_seg."', '".$cc_num."', '".$vencimientofecha."', '".$tokens_upd_db."')");
 	if ($sql) {
 		header('Location: index.php?exito=4');
-		die();
+		exit;
 	} 
 	else {
-		echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Hubo un error al registrar la cuenta.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-		die();
+		ImprimirError("Hubo un error al registrar la cuenta.");
+		exit;
 	}
 } else {
-	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Ya existe una cuenta con esa direccion de e-mail.</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
-	die();
+	ImprimirError("Ya existe una cuenta con esa direccion de e-mail.");
+	exit;
 }
 ?>

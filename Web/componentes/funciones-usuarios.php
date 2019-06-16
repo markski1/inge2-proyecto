@@ -19,13 +19,12 @@ class sesion{
 	}
 	function cerrarSesion() {
 		session_start();
-		// si la sesion esta seteada se realiza, si no, se avisa.
 	    if(isset($_SESSION['id'])) {
 	        session_destroy();
 	        session_unset();
 	        header("Location: index.php");
 	    } else {
-	        echo "Para cerrar sesion estaria bueno que la inicies.";
+	        header("Location: index.php");
 	    }
 	}
 	function estaLogeado($con) {

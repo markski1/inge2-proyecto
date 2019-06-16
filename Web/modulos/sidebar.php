@@ -8,7 +8,7 @@ if ($logeado) {
 	}
 ?>
 <p>Conectado como:</br><?=$_SESSION['email']?></p>
-<p>Tokens restantes: <?php echo $datosUsuario['tokens']?></p>
+<p>Creditos restantes: <?php echo $datosUsuario['tokens']?></p>
 <p>
 	<?php if ($sesion->esAdmin()) {?>
 	<a href="admin.php">Panel administrativo.</a></br>&nbsp;</br>

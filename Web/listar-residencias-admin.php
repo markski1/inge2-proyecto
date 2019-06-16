@@ -27,7 +27,7 @@
 		</div>
 		<div class="pagina">
 			<span id="subtitulo">Todas nuestras residencias.</span>
-			<?php ListarResidencias($residencias, false) ?>
+			<?php ListarResidencias($residencias, true) ?>
 		</div>
 		<div style="clear: both;"></div>
 	</div>
