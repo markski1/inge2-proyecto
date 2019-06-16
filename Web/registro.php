@@ -85,6 +85,13 @@
 				<span>&nbsp;</span>
 				<center><p id="subtitulo">Información de Tarjeta de Credito</p></center>
 				<span>&nbsp;</span>
+				<p>
+					<?php
+						$sql = mysqli_query($con, "SELECT valor FROM variables WHERE `nombre`='normal'");
+						$arregloSql = mysqli_fetch_array($sql);
+						echo 'El costo del servicio es de $'.$arregloSql['valor'].' al año.';
+					?>
+				</p>
 				<table>
 					<tr>
 						<td style="width: 200px;">

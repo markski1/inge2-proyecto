@@ -6,7 +6,6 @@
 	$logeado = $sesion->estaLogeado($con);
 	$error = 0;
 	include('componentes/funciones-residencia.php');
-	include('componentes/solo-admin.php');
 
 	if (isset($_GET['editando']) && $_GET['editando'] == 1) {
 		$continuar = true;

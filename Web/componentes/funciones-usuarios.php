@@ -65,6 +65,19 @@ class sesion{
 			return false;
 		}
 	}
+	function esPremium() {
+		if(!isset($_SESSION['id'])) {
+			return false;
+		}
+		$con = conectar();
+		$sql = mysqli_query($con, "SELECT rango FROM usuarios WHERE id=".$_SESSION['id']);
+		$resultado = mysqli_fetch_array($sql);
+		if ($resultado['rango'] >= 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
 
 
@@ -94,5 +107,12 @@ function ImprimirTipoUsuario($datosUsuario) {
 			return 'Normal';
 			break;
 	}
+}
+
+function ObtenerDatosUsuarioPorID($id) {
+	$con = conectar();
+	$sql = mysqli_query($con, "SELECT * FROM usuarios WHERE id=".$id);
+	$retorno = mysqli_fetch_array($sql);
+	return $retorno;
 }
 ?>

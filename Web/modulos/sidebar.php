@@ -3,13 +3,24 @@
 </span>
 <?php
 if ($logeado) {
+	if (!isset($datosUsuario)) {
+		$datosUsuario = $sesion->obtenerDatosUsuario();
+	}
 ?>
 <p>Conectado como:</br><?=$_SESSION['email']?></p>
+<p>Tokens restantes: <?php echo $datosUsuario['tokens']?></p>
 <p>
 	<?php if ($sesion->esAdmin()) {?>
-	<a href="admin.php">Panel administrativo.</a></br>
+	<a href="admin.php">Panel administrativo.</a></br>&nbsp;</br>
 	<?php } ?>
-	<a href="perfil.php">Mi perfil</a></br>&nbsp;</br>
+	<?php 
+		if (!$sesion->esPremium()) {
+	?>
+		<a href="ser-premium.php">Quiero ser premium</a></br>&nbsp;</br>
+	<?php
+		}
+	?>
+	<a href="perfil.php">Mi perfil</a></br>
 	<a href="modulos/cerrar-sesion.php">Cerrar sesión</a></br>
 </p>
 <?php
