@@ -2,6 +2,9 @@
 	// se vuelca todo en un array llamado listar_residencias, y se hace un while por cada elemento.
 	$listados = 0;
 	while($listar_residencias = mysqli_fetch_array($residencias)){
+		if ($listar_residencias['oculto'] == 1) {
+			continue;
+		}
 		// crear divisor y colocar imagen
 		echo '<div class="residencia-listado">
 				<div class="alinear-izquierda" style="width: 205px; margin-left: 10px;">
@@ -20,7 +23,6 @@
 		if ($listar_residencias['pisoydepto'] != "NA") {
 			echo '<p>'.utf8_decode($listar_residencias['pisoydepto']).'</p>';
 		}
-		echo '<p style="color:green">$'.$listar_residencias['precio'].'</p>';
 		// cerrar divisores y poner el boton de Mas informacion
 		echo '</div>
 				<div style="clear: both;"></div>

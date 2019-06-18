@@ -8,7 +8,7 @@ function conectar(){
 		die();
     }
     mysqli_set_charset($con,'latin1');
-return $con;
+	return $con;
 }
 
 ?>

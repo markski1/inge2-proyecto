@@ -2,6 +2,9 @@
 	include('componentes/funciones-usuarios.php');
 	include('componentes/sql.php');
 	$con = conectar();
+	$sesion = new sesion;
+	$logeado = $sesion->estaLogeado($con);
+	if ($logeado) $datosUsuario = $sesion->obtenerDatosUsuario();
 	include('componentes/funciones-residencia.php');
 
 	$id = mysqli_real_escape_string($con, $_GET['id']);
@@ -17,30 +20,30 @@
     	header('Location: index.php');
     }
 
-    if(isset($_GET['ofertar']) && $_GET['ofertar'] == 1) {
+    if($logeado && isset($_GET['ofertar']) && $_GET['ofertar'] == 1) {
+    	$datosUsuario = $sesion->obtenerDatosUsuario();
     	if ($semana != -1){
 	    	$oferta = htmlspecialchars(mysqli_real_escape_string($con, $_POST['oferta']));
-	    	$email = htmlspecialchars(mysqli_real_escape_string($con, $_POST['email']));
 	    	$obtenerSubastaAOfertar = mysqli_query($con, "SELECT * FROM semanas WHERE id=".$semana);
 	    	$datosSubastaOfertar = mysqli_fetch_array($obtenerSubastaAOfertar);
  	    	if (EsOfertaValida($con, $semana, $id, $oferta, $datosSubastaOfertar['sub_precio_base'])) {
-	    		if ($email == '') {
-	    			echo '<div class="error"><p>No ingreso un e-mail valido.</p></div>';
-	    		} else {
-	    			$agregarOferta = mysqli_query($con, "INSERT INTO subastas (residencia, semana, email, oferta) VALUES ('".$id."', '".$semana."', '".$email."', '".$oferta."')");
-	    			if ($agregarOferta) {
-	    				echo '<div class="exito"><p>Has ofertado con exito.</p></div>';
-	    			} else {
-	    				echo '<div class="error"><p>Error al crear oferta.</p></div>';
-	    			}
-	    		}
+    			$agregarOferta = mysqli_query($con, "INSERT INTO subastas (residencia, semana, email, oferta) VALUES ('".$id."', '".$semana."', '".$datosUsuario['email']."', '".$oferta."')");
+    			if ($agregarOferta) {
+    				echo '<div class="exito"><p>Has ofertado con exito.</p></div>';
+    			} else {
+    				echo '<div class="error"><p>Error al crear oferta.</p></div>';
+    			}
 	    	} else {
 	    		echo '<div class="error"><p>Su oferta no es lo suficientemente alta.</p></div>';
 	    	}
     	} else {
     		echo '<div class="error"><p>Error desconocido.</p></div>';
     	}
-    } 
+    }
+
+    if (isset($_GET['reservahecha']) && $_GET['reservahecha'] == 1) {
+    	echo "<div class='exito'><p>Reservado con éxito.</p></div>";
+    }
 
 	// se bajan los datos de la residencia en $residencia
     $residencia = mysqli_query($con, "SELECT * FROM residencias WHERE id=".$id);
@@ -63,9 +66,15 @@
 			window.location = redireccion;
 		}
 		function confirmarEliminar() {
-			var confirmacion=confirm("Seguro que queres eliminar esta residencia?");
+			var confirmacion=confirm("¿Seguro que queres eliminar esta residencia?");
 			if (confirmacion) {
 				window.location = "eliminar-residencia.php?id=<?php echo $id ?>";
+			}
+		}
+		function confirmarOcultar() {
+			var confirmacion=confirm("¿Seguro que queres ocultar esta residencia?");
+			if (confirmacion) {
+				window.location = "ocultar-residencia.php?id=<?php echo $id ?>";
 			}
 		}
 	</script>
@@ -94,10 +103,14 @@
 							echo '</p>';
 						}
 					?>
-					<p><span class="color-hsh"><b>Precio por semana:</b></span> $<?php echo $datos_residencia['precio']?></p>
 				</div>
 				<div style="clear: both;"></div>
 				<p><span class="color-hsh"><b>Descripción:</b></span> <?php echo utf8_decode($datos_residencia['descripcion'])?></p>
+				<?php
+					if (!$logeado) {
+						echo '<p>Para ver las semanas y opciones, es necesario que estes registrado en el sistema.</p>';
+					} else {
+				?>
 				<select id="semanas" name="semana" onchange="elegirSemana();">
 				<option value="*">Seleccionar semana</option>
 				<?php $subastas = ListarSemanas($con, $id, $semana, $estado); ?>
@@ -111,20 +124,30 @@
 							break;
 
 						case 2:
-							echo '<p>Esta semana solo puede ser reservada por un usuario premium.</p>';
+							if (!$sesion->esPremium()) {
+								echo '<p>Esta semana solo puede ser reservada por un usuario premium.</p>';
+							} else {
+								if ($datosUsuario['tokens'] == 0) {
+									echo '<p>No es posible ofertar en esta semana debido a que no te quedan creditos.</p>';
+								} else {
+									echo '<p>Esta semana es premium. <a href="hacer-reserva-premium.php?id='.$id.'&semana='.$semana.'">Reservar</a></p>';
+								}
+							}
 							break;
 
 						case 3:
 							echo '<p>Esta semana ya esta reservada.</p>';
-							if (esAdmin()) {
+							if ($sesion->esAdmin()) {
 								echo ObtenerInfoReserva($con, $id, $semana);
 							}
 							break;
 						
 						default:
 							if ($subastas > 0) {
-								echo '<p>Esta semana tiene una subasta en curso. <a href="./ver-residencia.php?id='.$id.'&semana='.$subastas.'">Ir a subasta.</a></p>';
-							} else echo '<p>Esta propiedad no tiene subastas en curso.</p>';
+								echo '<p>Esta residencia tiene una subasta en curso. <a href="./ver-residencia.php?id='.$id.'&semana='.$subastas.'">Ir a subasta.</a></p>';
+							} else {
+								echo '<p>Esta residencia no tiene subastas en curso.</p>';
+							}
 							break;
 					}
 					
@@ -142,29 +165,39 @@
 						}
 				?>
 				<p id="subtitulo">Ofertar en subasta.</p>
+				<?php 
+					$finSubasta = ObtenerFinSubasta($con, $semana, false);
+				?>
 				<p>El precio base es de $<?php echo $listarDatosSubasta['sub_precio_base'] ?></p>
+				<p>La subasta finaliza el <?php echo $finSubasta ?></p>
 				<?php 
 					if ($ofertaMasAlta == 0) echo '<p>Nadie ha ofertado aun por esta propiedad.</p>';
-					else echo '<p>La oferta mas alta es de '.$ofertaMasAlta.' por '.$email.'</p>';
+					else if ($sesion->esAdmin()) echo '<p>La oferta mas alta es de '.$ofertaMasAlta.' por '.$email.'</p>';
+					else echo '<p>La oferta mas alta es de '.$ofertaMasAlta.'.</p>';
 				?>
 				<form method="post" action="ver-residencia.php?id=<?php echo $id?>&semana=<?php echo $semana?>&ofertar=1">
 					<p><input class="campo-formulario" name="oferta" type="number" placeholder="Cantidad a ofertar (minimo $<?php echo $ofertaMinima ?>)"></p>
-					<p><input class="campo-formulario" name="email" placeholder="Dirección de e-mail"></p>
 					<input class="boton" type="submit" value="Ofertar en subasta">
 				</form>
 				<?php 
 					}
-				if (esAdmin()) {
+				}
+				if ($sesion->esAdmin()) {
 					echo '<p id="subtitulo">Controles administrativos.</p>';
 					if ($subOfertable) echo '<p><a href="cerrar-subasta.php?id='.$id.'&semana='.$semana.'" style="color: green">Cerrar subasta.</a></p>';
 					else echo '<p><a href="crear-subasta.php?id='.$id.'" style="color: green">Crear subasta.</a></p>';
 					echo '<p><a href="modificar-residencia.php?id='.$id.'" style="color: green">Modificar residencia.</a></p>';
+					if ($datos_residencia['oculto'] == 1) echo '<p><a href="mostrar-residencia.php?id='.$id.'" style="color: green">Mostrar residencia.</a></p>';
+					else echo '<p><a onclick="confirmarOcultar()" href="#" style="color: red">Ocultar residencia.</a></p>';
 					echo '<p><a onclick="confirmarEliminar()" href="#" style="color: red">Eliminar residencia.</a></p>';
 				}
 				?>
 			</div>
 		</div>
 		<div style="clear: both;"></div>
+	</div>
+	<div class="footer">
+		<?php include('modulos/footer.php') ?>
 	</div>
 </body>
 </html>

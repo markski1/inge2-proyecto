@@ -1,10 +1,14 @@
 <?php 
-	include('componentes/funciones-usuarios.php') ;
+	include('componentes/funciones-usuarios.php');
 	include('componentes/sql.php');
 	$con = conectar();
-	$error = 0;
+	$sesion = new sesion;
+	$logeado = $sesion->estaLogeado($con);
 	include('componentes/funciones-residencia.php');
 	include('componentes/solo-admin.php');
+	
+	$error = 0;
+
 	if (isset($_GET['error'])) {
 		switch ($_GET['error']) {
 			case 1:
@@ -16,7 +20,7 @@
 		$error = 0;
 
 		// Chequear que los campos esten llenos
-		$campos = array('nom', 'loc', 'cal', 'num', 'prec', 'desc'); 
+		$campos = array('nom', 'loc', 'cal', 'num', 'desc'); 
 		foreach($campos AS $campo) {
 			if(!isset($_POST[$campo]) || empty($_POST[$campo])) {
 				$error = 1;
@@ -50,7 +54,6 @@
 		if (!isset($pyd)) {
 			$pyd = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['pyd'])));
 		}
-		$prec = htmlspecialchars(mysqli_real_escape_string($con, $_POST['prec']));
 		$desc = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['desc'])));
 
 		if ($error != 0) {
@@ -59,7 +62,7 @@
 					echo "<div class='error'><p>Error: Uno o mas campos están vacios.</p></div>";
 					break;
 				case 2:
-					echo "<div class='error'><p>Error: Numero y precio no pueden tener letras.</p></div>";
+					echo "<div class='error'><p>Error: Numero no puede tener letras.</p></div>";
 					break;
 				case 3:
 					echo "<div class='error'><p>Error: No se incluyo imagen, o el archivo subido es nulo.</p></div>";
@@ -73,7 +76,7 @@
 				// addslashes se utiliza para convertir la imagen en binario y asi levantarla a la DB
 				$foto = addslashes(file_get_contents($_FILES['imagen']['tmp_name']));
 				// se envian los datos a la base de datos, si se sube te avisa y si no tambien.
-				$sql = mysqli_query($con, "INSERT INTO residencias (nombre, localizacion, calle, numero, pisoydepto, precio, imagen, descripcion) VALUES ('".$nom."', '".$loc."', '".$cal."','".$num."', '".$pyd."', '".$prec."', '".$foto."', '".$desc."')");
+				$sql = mysqli_query($con, "INSERT INTO residencias (nombre, localizacion, calle, numero, pisoydepto, imagen, descripcion) VALUES ('".$nom."', '".$loc."', '".$cal."','".$num."', '".$pyd."', '".$foto."', '".$desc."')");
 				if ($sql) {
 					echo '<div class="exito"><p>Residencia agregada con exito.</p></div>';
 					$idNuevaResidencia = mysqli_insert_id($con);
@@ -150,14 +153,6 @@
 					</tr>
 					<tr>
 						<td style="width: 200px;">
-							<span>Precio base:</span>
-						</td>
-						<td>
-							<input type="number" maxlenght="16" name="prec" class="campo-formulario" placeholder="Precio en pesos." id="precio" value="<?php if($error > 0 && isset($prec)) echo $prec ?>">
-						</td>
-					</tr>
-					<tr>
-						<td style="width: 200px;">
 							<span>Imagen: (JPG, Max 2mb)</span>
 						</td>
 						<td>
@@ -176,6 +171,9 @@
 			</form>
 		</div>
 		<div style="clear: both;"></div>
+	</div>
+	<div class="footer">
+		<?php include('modulos/footer.php') ?>
 	</div>
 </body>
 </html>
