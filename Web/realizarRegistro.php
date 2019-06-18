@@ -4,7 +4,7 @@ include('componentes/sql.php');
 $con = conectar();
 
 function ImprimirError($error) {
-	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de reserva</h1></center><div class="reg-error"><p>Error: '.$error.'</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
+	echo '<link rel="stylesheet" type="text/css" href="estilo.css"><body style="background-color:gray;"><center><h1>Home Switch Home - Error de registro</h1></center><div class="reg-error"><p>Error: '.$error.'</p><p><a href="#" onclick="window.history.back()">Volver</a></p></div></body>';
 }
 
 $campos = array('nom', 'ape', 'email', 'nac_dia', 'nac_mes', 'nac_anno', 'clv', 'cc_titular', 'cc_marca', 'cc_seg', 'cc_num', 'cc_venc_mes', 'cc_venc_anno'); 
@@ -59,10 +59,16 @@ if ($cc_venc_mes > 12) {
 } 
 
 $nacimientofecha = $nac_anno."-".$nac_mes."-".$nac_dia;
+$fechacheck = strtotime($nacimientofecha);
 $vencimientofecha = $cc_venc_anno."-".$cc_venc_mes."-28";
 
 if (strtotime($vencimientofecha) < time()) {
 	ImprimirError("Esa tarjeta de credito ha vencido.");
+	exit;
+}
+
+if (strtotime("+18 years", $fechacheck) > time()) {
+	ImprimirError("Necesitas ser mayor de 18 años para utilizar este servicio.");
 	exit;
 }
 

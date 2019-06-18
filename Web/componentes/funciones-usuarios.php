@@ -103,7 +103,7 @@ function ImprimirTipoUsuario($datosUsuario) {
 			break;
 		
 		default:
-			return 'Normal';
+			return 'Basico';
 			break;
 	}
 }

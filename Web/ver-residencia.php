@@ -143,10 +143,14 @@
 							break;
 						
 						default:
-							if ($subastas > 0) {
-								echo '<p>Esta residencia tiene una subasta en curso. <a href="./ver-residencia.php?id='.$id.'&semana='.$subastas.'">Ir a subasta.</a></p>';
+							if ($semana == -1) {
+								if ($subastas > 0) {
+									echo '<p>Esta residencia tiene una subasta en curso. <a href="./ver-residencia.php?id='.$id.'&semana='.$subastas.'">Ir a subasta.</a></p>';
+								} else {
+									echo '<p>Esta residencia no tiene subastas en curso.</p>';
+								}
 							} else {
-								echo '<p>Esta residencia no tiene subastas en curso.</p>';
+								echo '<p>Esta semana ya paso su etapa premium, y no puede ser reservada.</p>';
 							}
 							break;
 					}

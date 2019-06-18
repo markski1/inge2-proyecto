@@ -65,7 +65,7 @@
 				<form method="POST" action="perfil-admin.php?id=<?php echo $_GET['id'] ?>&cambiar=1">
 					<select name="rango">
 						<option value="*">Seleccionar rango</option>
-						<option value="0">Usuario normal</option>
+						<option value="0">Usuario basico</option>
 						<option value="1">Usuario premium</option>
 						<option value="2">Administrador</option>
 					</select></br>&nbsp;</br>
