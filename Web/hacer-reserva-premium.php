@@ -9,7 +9,7 @@
 		exit;
 	}
 
-	if (!isset($_GET['id'] || !isset($_GET['semana']) || !is_numeric($_GET['semana']) ||!is_numeric($_GET['id'])) {
+	if (!isset($_GET['id']) || !isset($_GET['semana']) || !is_numeric($_GET['semana']) ||!is_numeric($_GET['id'])) {
 		header('Location: index.php?error=4');
 		exit;
 	}
@@ -18,7 +18,7 @@
 
 	$datosUsuario = $sesion->obtenerDatosUsuario();
 
-	$residencia = mysqli_query($con, "SELECT * FROM residencias WHERE id=".$id);
+	$residencia = mysqli_query($con, "SELECT * FROM residencias WHERE id=".$_GET['id']);
 
     $datos_residencia = mysqli_fetch_array($residencia);
 
@@ -36,10 +36,15 @@
     	exit;
     }
 
-    $sql = mysqli_query($con, "UPDATE semanas SET sub_precio_base=0, subasta=0, reservado=1, reservado_por='".$_SESSION['id']."', reservado_precio='0' WHERE id=".$_GET['semana']);
+    if (!$sesion->esPremium()) {
+    	ImprimirError("Usuario no premium.");
+    	exit;
+    }
+
+    $sql = mysqli_query($con, "UPDATE semanas SET sub_precio_base=0, subasta=0, reservado=1, reservado_por='".$_SESSION['email']."', reservado_precio='-1' WHERE id=".$_GET['semana']);
     if ($sql) {
     	$tokens = $datosUsuario['tokens'] - 1;
-    	mysqli_query($con, "UPDATE usuarios SET tokens='".$tokens."'WHERE id='".$_SESSION['id']);
+    	mysqli_query($con, "UPDATE usuarios SET tokens='".$tokens."'WHERE id='".$_SESSION['id']."'");
     	header('Location: ver-residencia.php?id='.$_GET['id'].'&semana='.$_GET['semana'].'&reservahecha=1');
     }
 ?>

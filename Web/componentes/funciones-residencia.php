@@ -149,7 +149,13 @@ function ObtenerInfoReserva($con, $residencia, $semana) {
 	$sql = mysqli_query($con, "SELECT reservado_por, reservado_precio FROM semanas WHERE residencia=".$residencia." AND id=".$semana);
 	if ($sql) {
 		$infoReserva = mysqli_fetch_array($sql);
-		return "Reservado por ".$infoReserva['reservado_por'].", quien pago $".$infoReserva['reservado_precio'];
+		if ($infoReserva['reservado_precio'] == -1) {
+			return "Reservado por ".$infoReserva['reservado_por'].", a traves de reserva premium.";
+		} else if ($infoReserva['reservado_precio'] == -2) {
+			return "Reservado por ".$infoReserva['reservado_por'].", a traves de hotsale.";
+		} else {
+			return "Reservado por ".$infoReserva['reservado_por'].", quien pago $".$infoReserva['reservado_precio']." en subasta.";
+		}
 	}
 	return false;
 }

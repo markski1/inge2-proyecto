@@ -130,7 +130,7 @@
 								if ($datosUsuario['tokens'] == 0) {
 									echo '<p>No es posible ofertar en esta semana debido a que no te quedan creditos.</p>';
 								} else {
-									echo '<p><a href="hacer-reserva-premium.php?id='.$id.'&semana='.$semana.'">Reservar semana</a></p>';
+									echo '<p>Esta semana es premium. <a href="hacer-reserva-premium.php?id='.$id.'&semana='.$semana.'">Reservar</a></p>';
 								}
 							}
 							break;
