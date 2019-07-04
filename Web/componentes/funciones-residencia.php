@@ -282,4 +282,12 @@ function ListarResidencias($residencias, $admin) {
 	}
 }
 
+function TieneSubasta($con, $id) {
+	$sql = mysqli_query($con, "SELECT * FROM semanas WHERE residencia=".$id);
+	while($listarsemanas = mysqli_fetch_array($sql)){
+		if ($listarsemanas['subasta'] > 0) return true;
+	}
+	return false;
+}
+
 ?>

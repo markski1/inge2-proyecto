@@ -58,7 +58,7 @@
 				<p><span class="color-hsh"><b>Marca:</b></span> <?php echo utf8_decode($datosUsuarioViendo['cc_marca'])?></p>
 				<p><span class="color-hsh"><b>Numero:</b></span> <?php echo utf8_decode($datosUsuarioViendo['cc_numero'])?></p>
 				<p><span class="color-hsh"><b>Vencimiento:</b></span> <?php $fechaCompleta = utf8_decode($datosUsuarioViendo['cc_vencimiento']); $mostrar = str_replace('-28 00:00:00', '', $fechaCompleta); echo $mostrar;?></p>
-				<p id="subtitulo">Información miscelanea</p>
+				<p id="subtitulo">Datos varios</p>
 				<p><span class="color-hsh"><b>Creditos restantes:</b></span> <?php echo utf8_decode($datosUsuarioViendo['tokens']);?></p>
 				<p><span class="color-hsh"><b>Rango actual:</b></span> <?php echo ImprimirTipoUsuario($datosUsuarioViendo)?></p>
 				<p>Cambiar rango</p>

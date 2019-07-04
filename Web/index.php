@@ -24,6 +24,9 @@
 			case 5:
 				echo "<div class='error'><p>E-Mail o clave incorrectos.</p></div>";
 				break;
+			case 6:
+				echo "<div class='error'><p>La residencia no se pudo ocultar porque tiene una subasta en curso.</p></div>";
+				break;
 		}
 	}
 	if (isset($_GET['exito'])) {
