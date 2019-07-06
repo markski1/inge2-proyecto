@@ -77,6 +77,12 @@
 				window.location = "ocultar-residencia.php?id=<?php echo $id ?>";
 			}
 		}
+		function confirmarReservar() {
+			var confirmacion=confirm("¿Seguro que queres reservar esta residencia?");
+			if (confirmacion) {
+				window.location = "hacer-reserva-premium.php?id=<?php echo $id ?>&semana=<?php echo $semana ?>";
+			}
+		}
 	</script>
 </head>
 <body>
@@ -130,7 +136,7 @@
 								if ($datosUsuario['tokens'] == 0) {
 									echo '<p>No es posible ofertar en esta semana debido a que no te quedan creditos.</p>';
 								} else {
-									echo '<p>Esta semana es premium. <a href="hacer-reserva-premium.php?id='.$id.'&semana='.$semana.'">Reservar</a></p>';
+									echo '<p>Esta semana es premium. <a onclick="confirmarReservar()" href="#">Reservar</a></p>';
 								}
 							}
 							break;
