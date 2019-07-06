@@ -86,6 +86,13 @@
 		}
 
 		if ($continuar) {
+			if (ChequearExisteUsuario($con, $email)) {
+				echo '<div class="error"><p>Ese e-mail ya esta en uso.</p></div>';
+				$continuar = false;
+			}
+		}
+
+		if ($continuar) {
 			$sql = mysqli_query($con, "UPDATE usuarios SET `nombre`='".$nombre."', `apellido`='".$apellido."', `email`='".$email."', `cc_titular`='".$cc_titular."', `cc_marca`='".$cc_marca."', `cc_segur`='".$cc_seg."', `cc_numero`='".$cc_num."'".$nacimientoquery.$vencimientoquery.$clavequery." WHERE id=".$_SESSION['id']);
 			if ($sql) {
 				echo '<div class="exito"><p>Perfil actualizado con éxito.</p></div>';

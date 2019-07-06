@@ -11,7 +11,7 @@
 	include('componentes/solo-admin.php');
 	$id = mysqli_escape_string($con, $_GET['id']);
 	if (TieneSubasta($con, $id)) {
-		header('Location: index.php?error=5');
+		header('Location: index.php?error=6');
 		exit;
 	}
 	$query = "UPDATE `residencias` SET oculto=1 WHERE id=".$id;
