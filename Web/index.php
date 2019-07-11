@@ -76,8 +76,8 @@
 			}
 			?>
 			
-			<p><a href="listar-residencias.php">Listar nuestras residencias.</a></p>
-			<!-- <p><a href="listar-residencias.php?tipo=subasta">Listar nuestras residencias en subasta.</a></p> -->
+			<p><a href="listar-residencias.php">Listar todas las residencias.</a></p>
+			<p><a href="filtrar-residencias.php">Filtrar residencias.</a></p>
 			
 		</div>
 		<div style="clear: both;"></div>

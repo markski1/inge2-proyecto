@@ -31,18 +31,36 @@
     			if ($agregarOferta) {
     				echo '<div class="exito"><p>Has ofertado con exito.</p></div>';
     			} else {
-    				echo '<div class="error"><p>Error al crear oferta.</p></div>';
+    				MostrarError("Error al crear oferta.");
     			}
 	    	} else {
-	    		echo '<div class="error"><p>Su oferta no es lo suficientemente alta.</p></div>';
+	    		MostrarError("Su oferta no es lo suficientemente alta.");
 	    	}
     	} else {
-    		echo '<div class="error"><p>Error desconocido.</p></div>';
+    		MostrarError("Error desconocido.");
     	}
     }
 
     if (isset($_GET['reservahecha']) && $_GET['reservahecha'] == 1) {
     	echo "<div class='exito'><p>Reservado con éxito.</p></div>";
+    }
+
+    if (isset($_GET['error'])) {
+    	switch ($_GET['error']) {
+    		case 1:
+    			MostrarError("Semana invalida.");
+    			break;
+    		
+    		case 2:
+    			MostrarError("Error al eliminar hotsale.");
+    			break;
+    	}
+    } else if (isset($_GET['exito'])) {
+    	switch ($_GET['exito']) {
+    		case 1:
+    			echo '<div class="exito"><p>Hotsale eliminado exitosamente.</p></div>';
+    			break;
+    	}
     }
 
 	// se bajan los datos de la residencia en $residencia
@@ -78,9 +96,21 @@
 			}
 		}
 		function confirmarReservar() {
-			var confirmacion=confirm("¿Seguro que queres reservar esta residencia?");
+			var confirmacion=confirm("¿Seguro que queres reservar esta semana premium?");
 			if (confirmacion) {
 				window.location = "hacer-reserva-premium.php?id=<?php echo $id ?>&semana=<?php echo $semana ?>";
+			}
+		}
+		function confirmarReservarHotsale() {
+			var confirmacion=confirm("¿Seguro que queres reservar esta semana hotsale?");
+			if (confirmacion) {
+				window.location = "hacer-reserva-hotsale.php?id=<?php echo $id ?>&semana=<?php echo $semana ?>";
+			}
+		}
+		function confirmarEliminarHotsale() {
+			var confirmacion=confirm("¿Seguro que queres eliminar este hotsale?");
+			if (confirmacion) {
+				window.location = "eliminar-hotsale.php?id=<?php echo $id ?>&semana=<?php echo $semana?>";
 			}
 		}
 	</script>
@@ -147,6 +177,10 @@
 								echo ObtenerInfoReserva($con, $id, $semana);
 							}
 							break;
+
+						case 4:
+							echo '<p>Esta semana esta en hotsale. Tiene un precio de $'.ObtenerInformacionHotsale($con, $semana).'. - <a onclick="confirmarReservarHotsale()" href="#">Reservar</a></p>';
+							break;
 						
 						default:
 							if ($semana == -1) {
@@ -194,9 +228,15 @@
 				}
 				if ($sesion->esAdmin()) {
 					echo '<p id="subtitulo">Controles administrativos.</p>';
-					if ($subOfertable) echo '<p><a href="cerrar-subasta.php?id='.$id.'&semana='.$semana.'" style="color: green">Cerrar subasta.</a></p>';
+					if ($subOfertable) echo '<p><a href="cerrar-subasta.php?id='.$id.'&semana='.$semana.'" style="color: red">Cerrar subasta.</a></p>';
 					else echo '<p><a href="crear-subasta.php?id='.$id.'" style="color: green">Crear subasta.</a></p>';
 					echo '<p><a href="modificar-residencia.php?id='.$id.'" style="color: green">Modificar residencia.</a></p>';
+					if ($estado == 4) {
+						echo '<p><a style="color: green" href="modificar-hotsale.php?id='.$id.'&semana='.$semana.'">Modificar hotsale.</p>';
+						echo '<p><a style="color: red" onclick="confirmarEliminarHotsale()" href="#">Eliminar hotsale.</p>';
+					} else {
+						echo '<p><a href="crear-hotsale.php?id='.$id.'" style="color: green">Crear hotsale</p>';
+					}
 					if ($datos_residencia['oculto'] == 1) echo '<p><a href="mostrar-residencia.php?id='.$id.'" style="color: green">Mostrar residencia.</a></p>';
 					else echo '<p><a onclick="confirmarOcultar()" href="#" style="color: red">Ocultar residencia.</a></p>';
 					echo '<p><a onclick="confirmarEliminar()" href="#" style="color: red">Eliminar residencia.</a></p>';

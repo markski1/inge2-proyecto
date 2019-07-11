@@ -114,4 +114,8 @@ function ObtenerDatosUsuarioPorID($id) {
 	$retorno = mysqli_fetch_array($sql);
 	return $retorno;
 }
+
+function MostrarError($error) {
+	echo '<div class="error"><p>'.$error.'</p></div>';
+}
 ?>

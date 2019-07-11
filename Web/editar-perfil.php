@@ -12,7 +12,7 @@
 		$campos = array('nom', 'ape', 'email', 'cc_titular', 'cc_marca', 'cc_seg', 'cc_num'); 
 		foreach($campos AS $campo) {
 			if(!isset($_POST[$campo]) || empty($_POST[$campo])) {
-				echo '<div class="error"><p>Falto llenar un campo obligatorio.</p></div>';
+				MostrarError("Falto llenar un campo obligatorio.");
 				$continuar = false;
 			}
 		}
@@ -27,12 +27,12 @@
 			$cc_num = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['cc_num'])));
 
 			if (strlen($cc_seg) != 3) {
-				echo '<div class="error"><p>Error: La clave de seguridad debe tener 3 caracteres.</p></div>';
+				MostrarError("Error: La clave de seguridad debe tener 3 caracteres.");
 				$continuar = false;
 			}
 
 			if (strlen($cc_num) != 16) {
-				echo '<div class="error"><p>Error: El numero de tarjeta de credito debe tener 16 caracteres.</p></div>';
+				MostrarError("Error: El numero de tarjeta de credito debe tener 16 caracteres.");
 				$continuar = false;
 			}
 		}
@@ -44,7 +44,7 @@
 				$nac_mes = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['nac_mes'])));
 				$nac_anno = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['nac_anno'])));
 				if ($nac_dia > 31 || $nac_mes > 12) {
-					echo '<div class="error"><p>La fecha de nacimiento no es valida.</p></div>';
+					MostrarError("La fecha de nacimiento no es valida.");
 					$continuar = false;
 				}
 				$nacimientofecha = $nac_anno."-".$nac_mes."-".$nac_dia;
@@ -58,12 +58,12 @@
 				$cc_venc_mes = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['cc_venc_mes'])));
 				$cc_venc_anno = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['cc_venc_anno'])));
 				if ($cc_venc_mes > 12) {
-					echo '<div class="error"><p>La fecha de vencimiento no es valida.</p></div>';
+					MostrarError("La fecha de vencimiento no es valida.");
 					$continuar = false;
 				} else {
 					$vencimientofecha = $cc_venc_anno."-".$cc_venc_mes."-28";
 					if (strtotime($vencimientofecha) < time()) {
-						echo '<div class="error"><p>La tarjeta de credito esta vencida.</p></div>';
+						MostrarError("La tarjeta de credito esta vencida.");
 						$continuar = false;
 					}
 					$vencimientoquery = ", `cc_vencimiento`='".$vencimientofecha."'";
@@ -76,7 +76,7 @@
 			if (isset($_POST['clv']) && !empty($_POST['clv'])) {
 				$clv = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['clv'])));
 				if (strlen($clv) < 6) {
-					echo '<div class="error"><p>La clave debe tener al menos 6 caracteres.</p></div>';
+					MostrarError("La clave debe tener al menos 6 caracteres.");
 					$continuar = false;
 				}
 				$clavequery = ", `clave`='".md5($clv)."'";
@@ -87,7 +87,7 @@
 
 		if ($continuar) {
 			if (ChequearExisteUsuario($con, $email)) {
-				echo '<div class="error"><p>Ese e-mail ya esta en uso.</p></div>';
+				MostrarError("Ese e-mail ya esta en uso.");
 				$continuar = false;
 			}
 		}
@@ -97,7 +97,7 @@
 			if ($sql) {
 				echo '<div class="exito"><p>Perfil actualizado con éxito.</p></div>';
 			} else {
-				echo '<div class="error"><p>Error al almacenar los datos.</p></div>';
+				MostrarError("Error al almacenar los datos.");
 			}
 		}
 	}

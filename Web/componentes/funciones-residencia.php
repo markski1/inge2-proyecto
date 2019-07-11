@@ -61,6 +61,8 @@ function ListarSemanas($con, $id, $semana = -1, &$estado) {
 			}
 		} else if ($listarsemanas['reservado'] == 1){
 			echo '<option '.$tex.' style="background-color: #FF1308;" value="'.$listarsemanas['id'].'">'.$texto.'</option>';
+		} else if ($listarsemanas['hotsale'] == 1){
+			echo '<option '.$tex.' style="background-color: #56B7E8;" value="'.$listarsemanas['id'].'">'.$texto.'</option>';
 		} else {
 			echo '<option '.$tex.' value="'.$listarsemanas['id'].'">'.$texto.'</option>';
 		}
@@ -69,10 +71,50 @@ function ListarSemanas($con, $id, $semana = -1, &$estado) {
 		if ($semana == $listarsemanas['id']) {
 			if ($listarsemanas['subasta'] > 0) $estado = 1; // En subasta
 			else if ($listarsemanas['reservado'] == 1) $estado = 3; // reservado
+			else if ($listarsemanas['hotsale'] == 1) $estado = 4; // en hotsale
 			else if ($fecha > $fechaLimite) $estado = 2; // Solo premium
 		}
 	}
 	return $subCont;
+}
+
+////////////////////////
+// Retorna el listado de semanas para una residencia que se pueden poner en hotsale.
+// Retorna otros valores dependiendo de sus parametros.
+////////////////////////
+function ListarSemanasHotsale($con, $id) {
+	// Seleccionamos el localizador "es-AR" para listar los meses en español
+	setlocale(LC_TIME, "es-AR");
+	// agarramos todas las semanas de la residencia
+	$estado = 0;
+	$subCont = 0;
+	$sql = mysqli_query($con, "SELECT * FROM semanas WHERE residencia=".$id);
+	// si se pide validar que este dentro de los 6 meses, establecemos una fecha limite
+	$fechaLimite = time();
+	$fechaLimite = strtotime("+5 month +4 week", $fechaLimite);
+
+	while($listarsemanas = mysqli_fetch_array($sql)){
+		// Tomamos la fecha de la base de datos, y la convertimos del formato de fecha SQL al de PHP
+		$fecha = strtotime($listarsemanas['fecha']);
+		// Hacemos una segunda variable que tenga el final de esa semana (seria el domingo)
+		$fechaFin = strtotime("+6 day", $fecha);
+		// Creamos un string con como comienza la semana con el formato "dia de mes"
+		$comienzoSemana = date('d', $fecha)." de ".strftime("%B", $fecha);
+		// Creamos un string con como termina la semana con el formato "dia de mes de año"
+		$finSemana = date('d', $fechaFin)." de ".strftime("%B", $fechaFin).date(', Y', $fechaFin);
+		// juntamos los dos
+		$texto = $comienzoSemana." hasta ".$finSemana;
+
+		if ($fecha > $fechaLimite) break;
+
+		if ($listarsemanas['hotsale'] == 1 && $listarsemanas['reservado'] == 0){
+			echo '<option style="background-color: #56B7E8;" value="'.$listarsemanas['id'].'">'.$texto.'</option>';
+		} else if ($listarsemanas['reservado'] == 1){
+			echo '<option '.$tex.' style="background-color: #FF1308;" value="'.$listarsemanas['id'].'">'.$texto.'</option>';
+		} else {
+			echo '<option value="'.$listarsemanas['id'].'">'.$texto.'</option>';
+		}
+	}
 }
 
 ////////////////////////
@@ -288,6 +330,14 @@ function TieneSubasta($con, $id) {
 		if ($listarsemanas['subasta'] > 0) return true;
 	}
 	return false;
+}
+
+function ObtenerInformacionHotsale($con, $semana) {
+	$sql = mysqli_query($con, "SELECT * FROM semanas WHERE id=".$semana);
+	while($listarsemanas = mysqli_fetch_array($sql)){
+		if ($listarsemanas['hotsale'] > 0) return $listarsemanas['hotsale_precio'];
+	}
+	return -1;
 }
 
 ?>

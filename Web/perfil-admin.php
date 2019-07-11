@@ -24,7 +24,7 @@
 			}
 		}
 		if ($error) {
-			echo '<div class="error"><p>Ocurrio un error actualizando el perfil.</p></div>';
+			MostrarError("Ocurrio un error actualizando el perfil.");
 		} else {
 			echo '<div class="exito"><p>Perfil actualizado con éxito.</p></div>';
 		}
