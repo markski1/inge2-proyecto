@@ -19,19 +19,22 @@
 
 		$precio = htmlspecialchars(mysqli_real_escape_string($con, $_POST['precio']));
 		$semanaId = htmlspecialchars(mysqli_real_escape_string($con, $_POST['semana']));
-		$fechaActual = time();
-		if (date('w', $fechaActual) == 1) {
-			$finSubasta = strtotime("+3 day", $fechaActual);
+
+		if (!is_numeric($precio) || $precio < 1) {
+			MostrarError("Precio invalido o no ingresado.");
 		} else {
-			$lunesSemana = strtotime("last monday", $fechaActual);
-			$finSubasta = strtotime("+3 day", $lunesSemana);
+			if (ChequearSemanaReservada($con, $semanaId)) {
+				MostrarError("No se puede crear hotsale, esa semana ya fue reservada.");
+			} else {
+				if (ObtenerInformacionHotsale($con, $semanaId) == -1) {
+					$sql = mysqli_query($con, "UPDATE `semanas` SET `hotsale`='1', `hotsale_precio`='".$precio."' WHERE `id`='".$semanaId."'");
+					if ($sql) echo '<div class="exito"><p>Hotsale creado con exito.</p></div>';
+					else MostrarError("Error al crear hotsale.");
+				} else {
+					MostrarError("Esta semana ya tiene un hotsale en curso.");
+				}
+			}
 		}
-
-		$finSubastaDB = date("Y", $finSubasta)."-".date("m", $finSubasta)."-".date("d", $finSubasta);
-
-		$sql = mysqli_query($con, "UPDATE `semanas` SET `subasta`='1', `sub_precio_base`='".$precio."', `sub_finaliza`='".$finSubastaDB."'  WHERE `id`='".$semanaId."'");
-		if ($sql) echo '<div class="exito"><p>Subasta creada con exito.</p></div>';
-		else MostrarError("Error al crear subasta.");
 	}
 
 	// se bajan los datos de la residencia en $residencia
@@ -56,21 +59,17 @@
 			<?php include('modulos/sidebar.php') ?>
 		</div>
 		<div class="pagina">
-			<span id="subtitulo" class="color-hsh"><b>Creando subasta.</b></span></br>
+			<span id="subtitulo" class="color-hsh"><b>Creando hotsale.</b></span></br>
 			<div class="contenido-pagina">
-				<p><b>Crear subasta para la propiedad</b> <?php echo utf8_decode($datos_residencia['nombre'])?></p>
-				<form method="POST" action="crear-subasta.php?id=<?php echo $id; ?>&crear=1" onsubmit="return validarCrearSubasta()">
-					<p>Precio base: <input class="campo-formulario" name="precio"></p>
-					<p>Semana: <?php $semanaDeSubasta = ObtenerSemanaSubastable($con, $id); ?></p>
-					<?php
-						$yaReservado = ChequearSemanaReservada($con, $semanaDeSubasta);
-						if (!$yaReservado) {
-							echo '<input hidden="true" name="semana" value="'.$semanaDeSubasta.'">';
-							echo '<input type="submit" class="boton" value="Crear subasta">';
-						} else {
-							echo '<p>Esta semana no se puede colocar en subasta, porque ya fue reservada.';
-						}
-					?></form>
+				<p><b>Creando hotsale para la propiedad</b> <?php echo utf8_decode($datos_residencia['nombre'])?></p>
+				<form method="POST" action="crear-hotsale.php?id=<?php echo $id; ?>&crear=1" onsubmit="return validarCrearSubasta()">
+					<p>Precio: <input class="campo-formulario" name="precio" type="number"></p>
+					<p>Semana:
+					<select id="semanas" name="semana">
+						<?php ListarSemanasHotsale($con, $id); ?>
+					</select></p>
+					<input type="submit" class="boton" value="Crear hotsale">
+				</form>
 				<p><a href="ver-residencia.php?id=<?php echo $id ?>">Volver a residencia.</a></p>
 			</div>
 		</div>

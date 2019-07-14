@@ -95,7 +95,7 @@
 			if ($sql) {
 				echo '<div class="exito"><p>Residencia editada con exito.</p></div>';
 			} 
-			else echo '<div class="error"><p>Error al editar residencia.</p></div>';
+			else MostrarError("Error al editar residencia.");
 
 		}
 

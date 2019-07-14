@@ -24,6 +24,9 @@
 			case 5:
 				echo "<div class='error'><p>E-Mail o clave incorrectos.</p></div>";
 				break;
+			case 6:
+				echo "<div class='error'><p>La residencia no se pudo ocultar porque tiene una subasta en curso.</p></div>";
+				break;
 		}
 	}
 	if (isset($_GET['exito'])) {
@@ -73,8 +76,8 @@
 			}
 			?>
 			
-			<p><a href="listar-residencias.php">Listar nuestras residencias.</a></p>
-			<!-- <p><a href="listar-residencias.php?tipo=subasta">Listar nuestras residencias en subasta.</a></p> -->
+			<p><a href="listar-residencias.php">Listar todas las residencias.</a></p>
+			<p><a href="filtrar-residencias.php">Filtrar semanas.</a></p>
 			
 		</div>
 		<div style="clear: both;"></div>

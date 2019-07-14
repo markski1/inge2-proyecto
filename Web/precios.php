@@ -44,7 +44,7 @@
 			<table>
 				<tr>
 					<td style="width: 200px;">
-						<span>Precio usuario normal:</span>
+						<span>Precio usuario basico:</span>
 					</td>
 					<td>
 						<?php $variables = mysqli_fetch_array($vars); ?>

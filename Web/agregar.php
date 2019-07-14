@@ -83,10 +83,10 @@
 					CrearSemanas($con, $idNuevaResidencia);
 				} 
 				else {
-					echo '<div class="error"><p>Error al agregar residencia.</p></div>';
+					MostrarError("Error al agregar residencia.");
 				}
 			} else {
-				echo '<div class="error"><p>Ya existe una residencia con estas caracteristicas.</p></div>';
+				MostrarError("Ya existe una residencia con estas caracteristicas.");
 			}
 
 		}

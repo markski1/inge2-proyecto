@@ -3,22 +3,18 @@
 		header('Location: index.php');
 	}
 	include('componentes/funciones-usuarios.php');
-	include('componentes/funciones-residencia.php');
 	include('componentes/sql.php');
 	$con = conectar();
 	$sesion = new sesion;
 	$logeado = $sesion->estaLogeado($con);
 	include('componentes/solo-admin.php');
 	$id = mysqli_escape_string($con, $_GET['id']);
-	if (TieneSubasta($con, $id)) {
-		header('Location: index.php?error=6');
-		exit;
-	}
-	$query = "UPDATE `residencias` SET oculto=1 WHERE id=".$id;
+	$semana = mysqli_escape_string($con, $_GET['semana']);
+	$query = "UPDATE `semanas` SET hotsale=0, hotsale_precio=0 WHERE id=".$semana;
 	$sql = mysqli_query($con, $query);
 	if ($sql) {
-		header('Location: index.php?exito=2');
+		header('Location: ver-residencia.php?id='.$id.'&exito=1');
 		exit();
 	}
-	else header('Location: index.php?error=4');
+	else header('Location: ver-residencia.php?id='.$id.'&error=2');
 ?>

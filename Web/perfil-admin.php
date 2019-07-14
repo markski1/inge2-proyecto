@@ -24,7 +24,7 @@
 			}
 		}
 		if ($error) {
-			echo '<div class="error"><p>Ocurrio un error actualizando el perfil.</p></div>';
+			MostrarError("Ocurrio un error actualizando el perfil.");
 		} else {
 			echo '<div class="exito"><p>Perfil actualizado con éxito.</p></div>';
 		}
@@ -58,14 +58,14 @@
 				<p><span class="color-hsh"><b>Marca:</b></span> <?php echo utf8_decode($datosUsuarioViendo['cc_marca'])?></p>
 				<p><span class="color-hsh"><b>Numero:</b></span> <?php echo utf8_decode($datosUsuarioViendo['cc_numero'])?></p>
 				<p><span class="color-hsh"><b>Vencimiento:</b></span> <?php $fechaCompleta = utf8_decode($datosUsuarioViendo['cc_vencimiento']); $mostrar = str_replace('-28 00:00:00', '', $fechaCompleta); echo $mostrar;?></p>
-				<p id="subtitulo">Información miscelanea</p>
+				<p id="subtitulo">Datos varios</p>
 				<p><span class="color-hsh"><b>Creditos restantes:</b></span> <?php echo utf8_decode($datosUsuarioViendo['tokens']);?></p>
 				<p><span class="color-hsh"><b>Rango actual:</b></span> <?php echo ImprimirTipoUsuario($datosUsuarioViendo)?></p>
 				<p>Cambiar rango</p>
 				<form method="POST" action="perfil-admin.php?id=<?php echo $_GET['id'] ?>&cambiar=1">
 					<select name="rango">
 						<option value="*">Seleccionar rango</option>
-						<option value="0">Usuario normal</option>
+						<option value="0">Usuario basico</option>
 						<option value="1">Usuario premium</option>
 						<option value="2">Administrador</option>
 					</select></br>&nbsp;</br>
