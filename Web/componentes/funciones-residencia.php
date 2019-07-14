@@ -20,6 +20,24 @@ function CrearSemanas($con, $id) {
 	}
 }
 
+function MostrarSemanasBusqueda($con) {
+	// Definimos "fecha" como un string que contiene el mes, dia y año actual.
+	setlocale(LC_TIME, "es-AR");
+	$fecha = date('M d, Y');
+	// Convertimos fecha de string a integer/datetime
+	$fecha = strtotime($fecha);
+	$fecha = strtotime("next monday", $fecha);
+	for ($i=0; $i < 52; $i++) { // por 52 semanas..
+		// Se agregan 7 dias a la fecha
+		$fecha = strtotime("+7 day", $fecha);
+		// Se le da formato YYYY/MM/DD que es la manera que tiene MySQL de guardar fechas
+		$fechaDb = date("Y", $fecha)."-".date("m", $fecha)."-".date("d", $fecha);
+		// Se imprime
+		$comienzoSemana = date('d', $fecha)." de ".strftime("%B", $fecha);
+		echo '<option value="'.$fecha.'">'.$comienzoSemana.'</option>';
+	}
+}
+
 ////////////////////////
 // Retorna el listado de semanas para una residencia especificada, en un formato de Droplist.
 // Retorna otros valores dependiendo de sus parametros
@@ -233,14 +251,14 @@ function ObtenerFinSubasta($con, $semana, $devolverBool) {
 	$fechaActual = time();
 	if ($devolverBool){
 		if ($fechaActual > $fechaFin) {
-			CerrarSubasta($con, $semana);
+			/*CerrarSubasta($con, $semana);*/
 			return true;
 		} else {
 			return false;
 		}
 	} else {
 		if ($fechaActual > $fechaFin) {
-			CerrarSubasta($con, $semana);
+			/*CerrarSubasta($con, $semana);*/
 			return false;
 		} else {
 			$textoDevolver = date('d', $fechaFin)." de ".strftime("%B", $fechaFin);
@@ -338,6 +356,20 @@ function ObtenerInformacionHotsale($con, $semana) {
 		if ($listarsemanas['hotsale'] > 0) return $listarsemanas['hotsale_precio'];
 	}
 	return -1;
+}
+
+function ObtenerOfertaMinimaSubasta($con, $res, $semana) {
+	$obtenerDatosSubasta = mysqli_query($con, "SELECT * FROM `semanas` WHERE residencia=".$res." AND id=".$semana);
+	$listarDatosSubasta = mysqli_fetch_array($obtenerDatosSubasta);
+	$email = '';
+	$cantidadOfertas = 0;
+	$ofertaMasAlta = ObtenerOfertaMasAlta($con, $res, $semana, $email, $cantidadOfertas);
+	if ($ofertaMasAlta >= $listarDatosSubasta['sub_precio_base']) {
+		$ofertaMinima = $ofertaMasAlta+100;
+	} else {
+		$ofertaMinima = $listarDatosSubasta['sub_precio_base'];
+	}
+	return $ofertaMinima;
 }
 
 ?>

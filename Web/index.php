@@ -77,7 +77,7 @@
 			?>
 			
 			<p><a href="listar-residencias.php">Listar todas las residencias.</a></p>
-			<p><a href="filtrar-residencias.php">Filtrar residencias.</a></p>
+			<p><a href="filtrar-residencias.php">Filtrar semanas.</a></p>
 			
 		</div>
 		<div style="clear: both;"></div>

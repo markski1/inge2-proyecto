@@ -75,6 +75,15 @@ hr {
 	padding-bottom: 20px;
 }
 
+.pagina-alt {
+	width: 100%;
+	background-color: white;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
 .contenido-pagina {
 	width: 95%;
 	margin-top: 15px;
