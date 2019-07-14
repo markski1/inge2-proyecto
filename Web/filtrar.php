@@ -102,7 +102,7 @@ switch ($tipo) {
 							<tr>
 								<td width="300"><b>Residencia</b></td>
 								<td width="200"><b>Semana</b></td>
-								<td width="200"><b>Estado</b></td>';
+								<td width="230"><b>Estado</b></td>';
 					if ($tipo == 2) {
 						echo '<td width="150"><b>Oferta actual</b></td>';
 					} else if ($tipo == 3) {
@@ -124,9 +124,9 @@ switch ($tipo) {
 						} else {
 							$fecha = strtotime($listar_residencias['fecha']);
 							if ($fecha > $fechaSubasta) {
-								$estado = '<span style="color:green;">Libre (Reservable premium).</span>';
+								$estado = '<span style="color:green;">Libre (reservable premium).</span>';
 							} else {
-								$estado = '<span style="color:red;">Libre (No reservable).</span>';
+								$estado = '<span style="color:red;">Libre (no reservable).</span>';
 							}
 						}
 						if ($tipo == 2) {
