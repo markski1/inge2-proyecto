@@ -84,10 +84,15 @@ class sesion{
 ////////////////////////
 // Retorna true o false dependiendo de si un e-mail ya esta registrado
 ////////////////////////
-function ChequearExisteUsuario($con, $email) {
+function ChequearExisteUsuario($con, $email, $id=-1) {
 	$sql = mysqli_query($con, "SELECT * FROM usuarios WHERE email='".$email."'");
 	if (mysqli_num_rows($sql) > 0) {
-		return true;
+		if ($id == -1) return true;
+		else {
+			$obt_datos = mysqli_fetch_array($sql);
+			if ($id == $obt_datos['id']) return false;
+			else return true;
+		}
 	}
 	return false;
 }

@@ -86,7 +86,7 @@
 		}
 
 		if ($continuar) {
-			if (ChequearExisteUsuario($con, $email)) {
+			if (ChequearExisteUsuario($con, $email, $_SESSION['id'])) {
 				MostrarError("Ese e-mail ya esta en uso.");
 				$continuar = false;
 			}
@@ -103,6 +103,13 @@
 	}
 
 	$datosUsuario = $sesion->obtenerDatosUsuario();
+	$fechaNacimiento = strtotime($datosUsuario['nacimiento']);
+	$nacimiento_dia = date('d', $fechaNacimiento);
+	$nacimiento_mes = date('n', $fechaNacimiento);
+	$nacimiento_anno = date('Y', $fechaNacimiento);
+	$fechaVencimiento = strtotime($datosUsuario['cc_vencimiento']);
+	$vencimiento_mes = date('n', $fechaVencimiento);
+	$vencimiento_anno = date('Y', $fechaVencimiento);
 ?>
 <!DOCTYPE html>
 <html>
@@ -153,11 +160,11 @@
 					</tr>
 					<tr>
 						<td style="width: 200px;">
-							<span>Fecha de Nacimiento:</br><small>Dejar vacio para no editar.</small></span></td>
+							<span>Fecha de Nacimiento:</span></td>
 						<td>
-							<input maxlenght="2" placeholder="Dia" style="width: 80px;" name="nac_dia" type="number" class="campo-formulario" id="nac_dia">
-							<input maxlenght="2" placeholder="Mes" style="width: 80px;" name="nac_mes" type="number" class="campo-formulario" id="nac_mes">
-							<input maxlenght="4" placeholder="Año" style="width: 150px;" name="nac_anno" type="number" class="campo-formulario" id="nac_anno">
+							<input maxlenght="2" placeholder="Dia" value="<?php echo $nacimiento_dia;?>" style="width: 80px;" name="nac_dia" type="number" class="campo-formulario" id="nac_dia">
+							<input maxlenght="2" placeholder="Mes" value="<?php echo $nacimiento_mes;?>" style="width: 80px;" name="nac_mes" type="number" class="campo-formulario" id="nac_mes">
+							<input maxlenght="4" placeholder="Año" value="<?php echo $nacimiento_anno;?>" style="width: 150px;" name="nac_anno" type="number" class="campo-formulario" id="nac_anno">
 						</td>
 					</tr>
 					<tr>
@@ -206,11 +213,11 @@
 					</tr>
 					<tr>
 						<td style="width: 200px;">
-							<span>Fecha de vencimiento:</br><small>Dejar vacio para no editar.</small></span>
+							<span>Fecha de vencimiento:</br></span>
 						</td>
 						<td>
-							<input maxlenght="2" placeholder="Mes" style="width: 110px;" name="cc_venc_mes" type="number" class="campo-formulario" id="cc_venc_mes">
-							<input maxlenght="4" placeholder="Año" style="width: 245px;" name="cc_venc_anno" type="number" class="campo-formulario" id="cc_venc_anno">
+							<input maxlenght="2" value="<?php echo $vencimiento_mes;?>" placeholder="Mes" style="width: 110px;" name="cc_venc_mes" type="number" class="campo-formulario" id="cc_venc_mes">
+							<input maxlenght="4" value="<?php echo $vencimiento_anno;?>" placeholder="Año" style="width: 245px;" name="cc_venc_anno" type="number" class="campo-formulario" id="cc_venc_anno">
 						</td>
 					</tr>
 				</table>
