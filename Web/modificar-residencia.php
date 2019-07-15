@@ -37,7 +37,7 @@
 		}
 
 		// Chequear que numero sea numero.
-		if(!filter_var($_POST['num'], FILTER_VALIDATE_INT))){
+		if(!filter_var($_POST['num'], FILTER_VALIDATE_INT)){
 			$error = 2;
 		}
 
@@ -86,9 +86,9 @@
 			// addslashes se utiliza para convertir la imagen en binario y asi levantarla a la DB
 			if ($imagen == 1) {
 				$foto = addslashes(file_get_contents($_FILES['imagen']['tmp_name']));
-				$sql = mysqli_query($con, "UPDATE `residencias` SET `nombre`='".$nom."', `localizacion`='".$loc."', `calle`='".$cal."', `numero`='".$num."', `pisoydepto`='".$pyd."', `imagen`='".$foto."', `descripcion`='".$desc."'");
+				$sql = mysqli_query($con, "UPDATE `residencias` SET `nombre`='".$nom."', `localizacion`='".$loc."', `calle`='".$cal."', `numero`='".$num."', `pisoydepto`='".$pyd."', `imagen`='".$foto."', `descripcion`='".$desc."' WHERE `id`='".$id."'");
 			} else {
-				$sql = mysqli_query($con, "UPDATE `residencias` SET `nombre`='".$nom."', `localizacion`='".$loc."', `calle`='".$cal."', `numero`='".$num."', `pisoydepto`='".$pyd."', `descripcion`='".$desc."'");
+				$sql = mysqli_query($con, "UPDATE `residencias` SET `nombre`='".$nom."', `localizacion`='".$loc."', `calle`='".$cal."', `numero`='".$num."', `pisoydepto`='".$pyd."', `descripcion`='".$desc."' WHERE `id`='".$id."'");
 			}
 			// se envian los datos a la base de datos, si se sube te avisa y si no tambien.
 			
@@ -184,9 +184,6 @@
 			</form>
 		</div>
 		<div style="clear: both;"></div>
-	</div>
-	<div class="footer">
-		<?php include('modulos/footer.php') ?>
 	</div>
 </body>
 </html>

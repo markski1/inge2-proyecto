@@ -49,7 +49,7 @@
 			<?php include('modulos/sidebar.php') ?>
 		</div>
 		<div class="pagina">
-			<span id="subtitulo">Filtar semanas.</span>
+			<span id="subtitulo">Filtrar residencias por semanas.</span>
 			<form action="filtrar.php" method="POST">
 				<p>Quiero semanas que esten: <select id="tipo" name="tipo" onchange="cambiarTipo();">
 					<option value="1">Libres</option>
@@ -65,9 +65,6 @@
 			</form>
 		</div>
 		<div style="clear: both;"></div>
-	</div>
-	<div class="footer">
-		<?php include('modulos/footer.php') ?>
 	</div>
 </body>
 </html>

@@ -38,10 +38,8 @@
         exit;
     }
 
-    $sql = mysqli_query($con, "UPDATE semanas SET sub_precio_base=0, subasta=0, reservado=1, reservado_por='".$_SESSION['email']."', reservado_precio='-2' WHERE id=".$_GET['semana']);
+    $sql = mysqli_query($con, "UPDATE semanas SET sub_precio_base=0, subasta=0, hotsale=0, reservado=1, reservado_por='".$_SESSION['email']."', reservado_precio='-2' WHERE id=".$_GET['semana']);
     if ($sql) {
-    	$tokens = $datosUsuario['tokens'] - 1;
-    	mysqli_query($con, "UPDATE usuarios SET tokens='".$tokens."'WHERE id='".$_SESSION['id']."'");
     	header('Location: ver-residencia.php?id='.$_GET['id'].'&semana='.$_GET['semana'].'&reservahecha=1');
     }
 ?>

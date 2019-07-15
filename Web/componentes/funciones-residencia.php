@@ -221,6 +221,18 @@ function ObtenerInfoReserva($con, $residencia, $semana) {
 }
 
 ////////////////////////
+// Retorna un texto que especifica quien reservo una semana de una residencia dada, y a cuanto.
+////////////////////////
+function ObtenerEmailReserva($con, $residencia, $semana) {
+	$sql = mysqli_query($con, "SELECT reservado_por, reservado_precio FROM semanas WHERE residencia=".$residencia." AND id=".$semana);
+	if ($sql) {
+		$infoReserva = mysqli_fetch_array($sql);
+		return $infoReserva['reservado_por'];
+	}
+	return false;
+}
+
+////////////////////////
 // Retorna true o false dependiendo de si un ID semana especificado esta reservado o no.
 ////////////////////////
 function ChequearSemanaReservada($con, $semana) {
@@ -251,14 +263,14 @@ function ObtenerFinSubasta($con, $semana, $devolverBool) {
 	$fechaActual = time();
 	if ($devolverBool){
 		if ($fechaActual > $fechaFin) {
-			/*CerrarSubasta($con, $semana);*/
+			CerrarSubasta($con, $semana);
 			return true;
 		} else {
 			return false;
 		}
 	} else {
 		if ($fechaActual > $fechaFin) {
-			/*CerrarSubasta($con, $semana);*/
+			CerrarSubasta($con, $semana);
 			return false;
 		} else {
 			$textoDevolver = date('d', $fechaFin)." de ".strftime("%B", $fechaFin);
