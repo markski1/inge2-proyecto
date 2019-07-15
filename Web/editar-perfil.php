@@ -4,12 +4,11 @@
 	$con = conectar();
 	$sesion = new sesion;
 	$logeado = $sesion->estaLogeado($con);
-	$error = 0;
 	include('componentes/funciones-residencia.php');
 
 	if (isset($_GET['editando']) && $_GET['editando'] == 1) {
 		$continuar = true;
-		$campos = array('nom', 'ape', 'email', 'cc_titular', 'cc_marca', 'cc_seg', 'cc_num'); 
+		$campos = array('nom', 'ape', 'email', 'cc_titular', 'cc_marca', 'cc_seg', 'cc_num', 'nac_dia', 'nac_mes', 'nac_anno', 'cc_venc_mes', 'cc_venc_anno'); 
 		foreach($campos AS $campo) {
 			if(!isset($_POST[$campo]) || empty($_POST[$campo])) {
 				MostrarError("Falto llenar un campo obligatorio.");
@@ -39,37 +38,29 @@
 
 		if ($continuar) {
 			// Si se decide cambiar la fecha de nacimiento...
-			if ((isset($_POST['nac_dia']) && isset($_POST['nac_mes']) && isset($_POST['nac_anno'])) && (!empty($_POST['nac_dia']) && !empty($_POST['nac_mes']) && !empty($_POST['nac_anno']))) {
-				$nac_dia = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['nac_dia'])));
-				$nac_mes = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['nac_mes'])));
-				$nac_anno = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['nac_anno'])));
-				if ($nac_dia > 31 || $nac_mes > 12) {
-					MostrarError("La fecha de nacimiento no es valida.");
-					$continuar = false;
-				}
-				$nacimientofecha = $nac_anno."-".$nac_mes."-".$nac_dia;
-				$nacimientoquery = ", `nacimiento`='".$nacimientofecha."'";;
-			} else {
-				$nacimientoquery = '';
+			$nac_dia = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['nac_dia'])));
+			$nac_mes = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['nac_mes'])));
+			$nac_anno = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['nac_anno'])));
+			if ($nac_dia > 31 || $nac_mes > 12) {
+				MostrarError("La fecha de nacimiento no es valida.");
+				$continuar = false;
 			}
+			$nacimientofecha = $nac_anno."-".$nac_mes."-".$nac_dia;
+			$nacimientoquery = ", `nacimiento`='".$nacimientofecha."'";
 
 			// Si se decide cambiar la fecha de vencimiento...
-			if ((isset($_POST['cc_venc_mes']) && isset($_POST['cc_venc_anno'])) && (!empty($_POST['cc_venc_mes']) && !empty($_POST['cc_venc_anno']))) {
-				$cc_venc_mes = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['cc_venc_mes'])));
-				$cc_venc_anno = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['cc_venc_anno'])));
-				if ($cc_venc_mes > 12) {
-					MostrarError("La fecha de vencimiento no es valida.");
-					$continuar = false;
-				} else {
-					$vencimientofecha = $cc_venc_anno."-".$cc_venc_mes."-28";
-					if (strtotime($vencimientofecha) < time()) {
-						MostrarError("La tarjeta de credito esta vencida.");
-						$continuar = false;
-					}
-					$vencimientoquery = ", `cc_vencimiento`='".$vencimientofecha."'";
-				}
+			$cc_venc_mes = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['cc_venc_mes'])));
+			$cc_venc_anno = utf8_encode(htmlspecialchars(mysqli_real_escape_string($con, $_POST['cc_venc_anno'])));
+			if ($cc_venc_mes > 12) {
+				MostrarError("La fecha de vencimiento no es valida.");
+				$continuar = false;
 			} else {
-				$vencimientoquery = '';
+				$vencimientofecha = $cc_venc_anno."-".$cc_venc_mes."-28";
+				if (strtotime($vencimientofecha) < time()) {
+					MostrarError("La tarjeta de credito esta vencida.");
+					$continuar = false;
+				}
+				$vencimientoquery = ", `cc_vencimiento`='".$vencimientofecha."'";
 			}
 
 			// Si se decide cambiar la contraseña...
