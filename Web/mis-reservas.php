@@ -65,8 +65,9 @@
 					echo '<table>
 							<tr>
 								<td width="300"><b>Residencia</b></td>
-								<td width="200"><b>Semana</b></td>';
-					echo '<td width="200">--</td>
+								<td width="200"><b>Semana</b></td>
+								<td width="200">--</td>
+								<td width="200">--</td>
 							</tr>
 							<tr><td> </td><td> </td><td> </td><td> </td></tr>';
 					while ($listar_residencias = mysqli_fetch_array($reservas)) {
@@ -77,6 +78,7 @@
 						echo '<tr>';
 						echo '<td>'.utf8_decode($listar_residencias['nombre']).'</td>';
 						echo '<td>'.$semana.'</td>';
+						echo '<td><a href="ver-residencia.php?id='.$listar_residencias['residencia'].'&semana='.$listar_residencias['id'].'">Ver reserva</a></td>';
 						echo '<td><a href="#" onclick="confirmarCancelar('.$listar_residencias['id'].')">Cancelar reserva</a></td>';
 						echo '</tr>';
 					}
@@ -88,9 +90,6 @@
 			</div>
 		</div>
 		<div style="clear: both;"></div>
-	</div>
-	<div class="footer">
-		<?php include('modulos/footer.php') ?>
 	</div>
 </body>
 </html>

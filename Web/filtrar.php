@@ -70,7 +70,7 @@ switch ($tipo) {
 
 	// Hotsale
 	case 3:
-		$sql = mysqli_query($con, "SELECT semanas.*,residencias.nombre FROM semanas INNER JOIN residencias ON semanas.residencia = residencias.id WHERE fecha > '".$desdeDb."' AND fecha < '".$hastaDb."' AND hotsale=1 ORDER BY fecha");
+		$sql = mysqli_query($con, "SELECT semanas.*,residencias.nombre FROM semanas INNER JOIN residencias ON semanas.residencia = residencias.id WHERE fecha > '".$desdeDb."' AND fecha < '".$hastaDb."' AND hotsale=1 AND reservado=0 ORDER BY fecha");
 		break;
 }
 

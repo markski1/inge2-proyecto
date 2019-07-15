@@ -14,6 +14,16 @@
 		header('Location: index.php?error=3');
 		exit();
 	}
+	$sql = mysqli_query($con, "SELECT * FROM semanas WHERE residencia=".$id." AND hotsale=1");
+	if (mysqli_num_rows($sql) > 0) {
+		header('Location: index.php?error=8');
+		exit();
+	}
+	$sql = mysqli_query($con, "SELECT * FROM semanas WHERE residencia=".$id." AND subasta=1");
+	if (mysqli_num_rows($sql) > 0) {
+		header('Location: index.php?error=7');
+		exit();
+	}
 	$query = "DELETE FROM `residencias` WHERE id=".$id;
 	$sql = mysqli_query($con, $query);
 	if ($sql) {

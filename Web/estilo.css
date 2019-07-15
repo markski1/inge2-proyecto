@@ -175,16 +175,16 @@ hr {
 	text-align: center;
 	margin-top: 20px;
 	font-size: 3em;
-	font-family: tahoma;
+	font-family: tahoma, Ubuntu;
 }
 
 #subtitulo {
 	font-size: 20px;
-	font-family: tahoma;
+	font-family: tahoma, Ubuntu;
 }
 
 #menu {
-	font-family: tahoma;
+	font-family: tahoma, Ubuntu;
 	text-decoration: none;
 	text-align: center;
 }

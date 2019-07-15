@@ -39,8 +39,5 @@
 		</div>
 		<div style="clear: both;"></div>
 	</div>
-	<div class="footer">
-		<?php include('modulos/footer.php') ?>
-	</div>
 </body>
 </html>
