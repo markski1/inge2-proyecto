@@ -63,13 +63,10 @@
 					<p>Precio <input class="campo-formulario" name="precio" value="<?php echo $datos_semana['hotsale_precio'] ?>" type="number"></p>
 					<input type="submit" class="boton" value="Actualizar">
 				</form>
-				<p><a href="ver-residencia.php?id=<?php echo $id ?>">Volver a residencia.</a></p>
+				<p><a href="ver-residencia.php?id=<?php echo $id ?>&semana=<?php echo $semana ?>">Volver a residencia.</a></p>
 			</div>
 		</div>
 		<div style="clear: both;"></div>
-	</div>
-	<div class="footer">
-		<?php include('modulos/footer.php') ?>
 	</div>
 </body>
 </html>

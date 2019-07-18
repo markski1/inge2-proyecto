@@ -27,6 +27,12 @@
 			case 6:
 				echo "<div class='error'><p>La residencia no se pudo ocultar porque tiene una subasta en curso.</p></div>";
 				break;
+			case 7:
+				echo "<div class='error'><p>No se puede eliminar esta residencia porque tiene una subasta en curso.</p></div>";
+				break;
+			case 8:
+				echo "<div class='error'><p>No se puede eliminar esta residencia porque tiene uno o mas hotsales en curso.</p></div>";
+				break;
 		}
 	}
 	if (isset($_GET['exito'])) {
@@ -81,9 +87,6 @@
 			
 		</div>
 		<div style="clear: both;"></div>
-	</div>
-	<div class="footer">
-		<?php include('modulos/footer.php') ?>
 	</div>
 </body>
 </html>

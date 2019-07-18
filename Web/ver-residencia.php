@@ -113,6 +113,14 @@
 				window.location = "eliminar-hotsale.php?id=<?php echo $id ?>&semana=<?php echo $semana?>";
 			}
 		}
+		function confirmarCancelar(residencia) {
+			var confirmacion=confirm("¿Seguro que queres cancelar esta reserva? No vas a recuperar tu token, y la acción no se podra revertir.");
+			if (confirmacion) {
+				var inicio = "cancelar-reserva.php?id=";
+				var direccion = inicio.concat(residencia);
+				window.location = direccion;
+			}
+		}
 	</script>
 </head>
 <body>
@@ -172,7 +180,11 @@
 							break;
 
 						case 3:
-							echo '<p>Esta semana ya esta reservada.</p>';
+							if (ObtenerEmailReserva($con, $id, $semana) == $datosUsuario['email']) {
+								echo '<p>Has reservado esta semana. <a href="#" onclick="confirmarCancelar('.$semana.')">Cancelar reserva</a></p>';
+							} else {
+								echo '<p>Esta semana ya esta reservada.</p>';
+							}
 							if ($sesion->esAdmin()) {
 								echo ObtenerInfoReserva($con, $id, $semana);
 							}
@@ -245,9 +257,6 @@
 			</div>
 		</div>
 		<div style="clear: both;"></div>
-	</div>
-	<div class="footer">
-		<?php include('modulos/footer.php') ?>
 	</div>
 </body>
 </html>
